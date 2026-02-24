@@ -28,7 +28,7 @@ public class UserView extends VerticalLayout {
         layout.add(btnInsert = new Button("insert user to DB"));
         btnInsert.addClickListener(clickEvent -> insertUserToDB());
         add(layout);
-        
+
     }
 
     private void insertUserToDB() {
@@ -42,9 +42,9 @@ public class UserView extends VerticalLayout {
             User user = new User(username, password);
             userService.insertUser(user);
             Notification.show("User inserted Ok!", 3000, Position.MIDDLE);
-        } catch (Exception e) {
-            e.printStackTrace();
-           Notification.show("User NOT inserted!" + e.getMessage(), 5000, Position.MIDDLE);
+        } catch (Exception exp) {
+            exp.printStackTrace();
+           Notification.show("User NOT inserted!" + exp.getMessage(), 5000, Position.MIDDLE);
         }
 
     }
