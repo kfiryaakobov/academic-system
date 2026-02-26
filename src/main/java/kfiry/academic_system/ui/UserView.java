@@ -2,6 +2,7 @@ package kfiry.academic_system.ui;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -18,8 +19,9 @@ public class UserView extends VerticalLayout {
     private Button btnInsert;
     private TextField txfUn;
     private TextField txfPw;
+    private Grid<User> usersGrid;
 
-    public UserView(UserService userService){
+    public UserView(UserService userService) {
         this.userService = userService;
         add(new H1("UserView"));
         HorizontalLayout layout = new HorizontalLayout(Alignment.BASELINE);
@@ -29,10 +31,15 @@ public class UserView extends VerticalLayout {
         btnInsert.addClickListener(clickEvent -> insertUserToDB());
         add(layout);
 
+        usersGrid = new Grid<>(User.class);
+        usersGrid.setItems(userService.getAllUsers());
+        usersGrid.getStyle().setBorder("1px solid gray");
+        usersGrid.setColumns("username", "password");
+        add(usersGrid);
     }
 
     private void insertUserToDB() {
-        
+
         String username = txfUn.getValue();
         String password = txfPw.getValue();
         // validation check
@@ -44,7 +51,7 @@ public class UserView extends VerticalLayout {
             Notification.show("User inserted Ok!", 3000, Position.MIDDLE);
         } catch (Exception exp) {
             exp.printStackTrace();
-           Notification.show("User NOT inserted!" + exp.getMessage(), 5000, Position.MIDDLE);
+            Notification.show("User NOT inserted!" + exp.getMessage(), 5000, Position.MIDDLE);
         }
 
     }

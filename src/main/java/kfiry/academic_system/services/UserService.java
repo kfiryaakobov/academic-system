@@ -1,5 +1,7 @@
 package kfiry.academic_system.services;
 
+import java.util.ArrayList;
+
 import org.springframework.stereotype.Service;
 
 import kfiry.academic_system.datamodels.User;
@@ -24,4 +26,10 @@ public class UserService {
         
         userRepo.insert(user);
     }
+
+    // R (Read/Retrive)
+   public ArrayList<User> getAllUsers()
+   {
+      return (ArrayList<User>)userRepo.findAll();
+   }
 }
