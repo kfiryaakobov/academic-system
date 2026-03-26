@@ -36,6 +36,15 @@ public class UserView extends VerticalLayout {
         usersGrid.getStyle().setBorder("1px solid gray");
         usersGrid.setColumns("username", "password");
         add(usersGrid);
+
+        Button btnPrivateSchedule = new Button("Schedule for Student");
+        btnPrivateSchedule.addClickListener(clickEvent -> privateSchedule());
+        add(btnPrivateSchedule);
+
+    }
+
+    private void privateSchedule() {
+        //userService.mainAlgoritem();
     }
 
     private void insertUserToDB() {
