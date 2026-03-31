@@ -1,5 +1,7 @@
 package kfiry.academic_system.ui;
 
+import java.util.List;
+
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.grid.Grid;
@@ -11,18 +13,22 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 
 import kfiry.academic_system.datamodels.User;
+import kfiry.academic_system.services.CoreService;
 import kfiry.academic_system.services.UserService;
 
 @Route("/")
 public class UserView extends VerticalLayout {
     private UserService userService;
+    private CoreService coreService;
     private Button btnInsert;
     private TextField txfUn;
     private TextField txfPw;
     private Grid<User> usersGrid;
+    private Grid<String> scheduleGrid;
 
-    public UserView(UserService userService) {
+    public UserView(UserService userService, CoreService coreService) {
         this.userService = userService;
+        this.coreService = coreService;
         add(new H1("UserView"));
         HorizontalLayout layout = new HorizontalLayout(Alignment.BASELINE);
         layout.add(txfUn = new TextField("username"));
@@ -41,10 +47,15 @@ public class UserView extends VerticalLayout {
         btnPrivateSchedule.addClickListener(clickEvent -> privateSchedule());
         add(btnPrivateSchedule);
 
+        scheduleGrid = new Grid<>();
+        scheduleGrid.getStyle().setBorder("1px solid gray");
+        add(scheduleGrid);
+
     }
 
     private void privateSchedule() {
-        //userService.mainAlgoritem();
+        List<String> scheduleOutput = coreService.runCoreAndReturnStrings();
+        scheduleGrid.setItems(scheduleOutput);
     }
 
     private void insertUserToDB() {

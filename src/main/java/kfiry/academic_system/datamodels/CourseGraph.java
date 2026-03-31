@@ -5,6 +5,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "courseGraph")
 public class CourseGraph {
     private Map<Course, List<Course>> adjList = new LinkedHashMap<>();// רשימת שכוניות - כלומר גרף
 

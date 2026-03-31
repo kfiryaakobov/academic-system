@@ -2,6 +2,9 @@ package kfiry.academic_system.datamodels;
 
 import java.util.ArrayList;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "course")
 public class Course {
     private String name;
     private String courseID;
