@@ -1,7 +1,5 @@
 package kfiry.academic_system.ui;
 
-
-
 import java.util.List;
 
 import com.vaadin.flow.component.button.Button;
@@ -24,7 +22,7 @@ import kfiry.academic_system.services.LecturerService;
 import kfiry.academic_system.services.MongoService;
 import kfiry.academic_system.services.UserService;
 
-@Route("/")
+@Route("/Mongo")
 public class MongoView extends VerticalLayout {
     private UserService userService;
     private CoreService coreService;
@@ -65,7 +63,7 @@ public class MongoView extends VerticalLayout {
         usersGrid.setItems(userService.getAllUsers());
         usersGrid.getStyle().setBorder("1px solid gray");
         usersGrid.setColumns("username", "password","semester");
-       usersGrid.addColumn(user -> String.join(", ", user.getCourseIds())).setHeader("Courses").setFlexGrow(3);
+        usersGrid.addColumn(user -> String.join(", ", user.getCourseIds())).setHeader("Courses").setFlexGrow(3);
         add(usersGrid);
         
         add(new H3("-- Course Grid --"));
@@ -96,7 +94,6 @@ public class MongoView extends VerticalLayout {
     }
 
     private void insertUserToDB() {
-
         String username = txfUn.getValue();
         String password = txfPw.getValue();
         // validation check
@@ -110,6 +107,5 @@ public class MongoView extends VerticalLayout {
             exp.printStackTrace();
             Notification.show("User NOT inserted!" + exp.getMessage(), 5000, Position.MIDDLE);
         }
-
     }
 }
