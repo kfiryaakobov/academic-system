@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "course")
+@Document(collection = "Courses")
 public class Course {
     private String name;
     private String courseID;
     private int duration;
     private Lecturer lecturer;
     private boolean mandatory;
-    private ArrayList<Course> prerequisites = new ArrayList<>();
+    private ArrayList<String> prerequisites = new ArrayList<>();
 
     public Course(String name, String courseID, int duration, Lecturer lecturer, boolean mandatory) {
         this.name = name;
@@ -21,13 +21,17 @@ public class Course {
         this.mandatory = mandatory;
     }
 
-    public Course(String name, String courseID, int duration, Lecturer lecturer, boolean mandatory, ArrayList<Course> prerequisites) {
+    public Course(String name, String courseID, int duration, Lecturer lecturer, boolean mandatory,
+            ArrayList<String> prerequisites) {
         this.name = name;
         this.courseID = courseID;
         this.duration = duration;
         this.lecturer = lecturer;
         this.mandatory = mandatory;
         this.prerequisites = prerequisites;
+    }
+
+    public Course() {
     }
 
     public String getName() {
@@ -70,18 +74,19 @@ public class Course {
         this.mandatory = mandatory;
     }
 
-    public ArrayList<Course> getPrerequisites() {
+    public ArrayList<String> getPrerequisites() {
         return prerequisites;
     }
 
-    public void setPrerequisites(ArrayList<Course> prerequisites) {
+    public void setPrerequisites(ArrayList<String> prerequisites) {
         this.prerequisites = prerequisites;
     }
 
     // add a course for a arrayList(prerequisites)
-    public void addPrerequisite(Course course) {
-        if (!prerequisites.contains(course))
-            prerequisites.add(course);
+    public void addPrerequisite(String courseId) {
+        if (!prerequisites.contains(courseId)) {
+            prerequisites.add(courseId);
+        }
     }
 
 }

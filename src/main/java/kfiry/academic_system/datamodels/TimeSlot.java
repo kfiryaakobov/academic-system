@@ -2,11 +2,8 @@ package kfiry.academic_system.datamodels;
 import java.time.DayOfWeek;
 import java.util.Objects;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
 // Shows me one time slot on the system board
 // Course X takes place on day Y between time A and time B
-@Document(collection = "TimeSlot")
 public class TimeSlot {
     private DayOfWeek day; // enum - {Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday}
     private int startHour;
@@ -82,5 +79,9 @@ public class TimeSlot {
         return hashCode;
     }
 
+    @Override
+    public String toString() {
+        return day + " " + startHour + ":00-" + endHour + ":00";
+    }
 }
 

@@ -4,7 +4,7 @@ import java.util.Set;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "lecturer")
+@Document(collection = "Lecturers")
 public class Lecturer {
     private String name;
     private String ID;
@@ -15,6 +15,8 @@ public class Lecturer {
         this.ID = ID;
         this.unavailableSlots = unavailableSlots;// הבעיה נפתרת אם תסתכל למעלה - במידה ומכניסים לערך זה נאל , התוכנית
                                                  // תקרוס. אפשר להכניס תנאי אם אבל לברר עם אילן לפני
+    }
+    public Lecturer(){
     }
 
     public String getName() {
@@ -54,6 +56,11 @@ public class Lecturer {
             }
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return name; // או מה שאתה רוצה להציג
     }
 
 }

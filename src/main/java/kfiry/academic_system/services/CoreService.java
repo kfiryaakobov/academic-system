@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import kfiry.academic_system.datamodels.Course;
 import kfiry.academic_system.datamodels.CourseGraph;
 import kfiry.academic_system.datamodels.TimeSlot;
-
+import kfiry.academic_system.datamodels.User;
 import kfiry.academic_system.utilities.SchedulerHelper;
 import kfiry.academic_system.utilities.TopologicalHelper;
 
@@ -21,37 +21,77 @@ public class CoreService {
 
     public CoreService(MongoService mongoService) {
         this.mongoService = mongoService;
-        // mongoService.initDataIfNeeded();
     }
 
-    public void init() {
-        mongoService.initDataIfNeeded();
+    public CourseGraph buildGraphForUser(String username) {
+        User user = mongoService.getUser(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+        List<Course> userCourses = getCoursesForUser(user);
+        Set<String> userCourseIds = new HashSet<>(user.getCourseIds());
+        CourseGraph graph = new CourseGraph();
+        // הוספת קורסים לגרף
+        for (Course course : userCourses) {
+            graph.addCourse(course);
+        }
+        // הוספת קשרי prerequisite
+        for (Course course : userCourses) {
+            if (course.getPrerequisites() == null) continue;
+            for (String prereqId : course.getPrerequisites()) {
+                if (userCourseIds.contains(prereqId)) {
+                    Course prereqCourse = findCourseById(userCourses, prereqId);
+                    if (prereqCourse != null) {
+                        graph.addPrerequisite(prereqCourse, course);
+                    }
+                }
+            }
+        }
+        return graph;
     }
 
-    public List<String> runCoreAndReturnStrings() {
+    public List<Course> getCoursesForUser(User user) {
+        return mongoService.getCoursesByIds(user.getCourseIds());
+    }
+
+    private Course findCourseById(List<Course> courses, String id) {
+        for (Course c : courses) {
+            if (c.getCourseID().equals(id)) {
+                return c;
+            }
+        }
+        return null;
+    }
+    
+
+    public List<String> runCoreAndReturnStrings(String username) {
         List<String> result = new ArrayList<>();
-        CourseGraph graph = mongoService.getGraph();
-        List<Course> topologicalListStudent = topologicalSort(graph);
-
+        // 1. בניית גרף למשתמש
+        CourseGraph graph = buildGraphForUser(username);
+        // 2. מיון טופולוגי
+        List<Course> orderedCourses = topologicalSort(graph);
+        // 3. יצירת scheduler
         SchedulerHelper scheduler = new SchedulerHelper();
-        scheduler.setTopologicCourses(topologicalListStudent);
-        boolean success = ScheduleringBacktrackingAndPruning(scheduler, 0);
+        scheduler.setTopologicCourses(orderedCourses);
+        // 4. הרצת backtracking
+        boolean success = SchedulingBacktrackingAndPruning(scheduler, 0);
 
-        if (success) {
-            result.add("Scheduling succeeded!");
-        } else {
+        if (!success) {
             result.add("No valid schedule found.");
             return result;
         }
-
+        result.add("Scheduling succeeded!");
         result.add("--- FINAL SCHEDULE ---");
-        for (Course c : topologicalListStudent) {
-            TimeSlot slot = scheduler.getAssignment(c);
+        // 5. בניית פלט
+        for (Course course : orderedCourses) {
+            TimeSlot slot = scheduler.getAssignment(course);
             if (slot != null) {
-                result.add(c.getName() + " | " +
-                        slot.getDay() + " " +
-                        slot.getStartHour() + ":00-" +
-                        slot.getEndHour() + ":00");
+                result.add(
+                    course.getName() + " | " +
+                    slot.getDay() + " " +
+                    slot.getStartHour() + ":00-" +
+                    slot.getEndHour() + ":00"
+                );
             }
         }
         return result;
@@ -76,7 +116,7 @@ public class CoreService {
         return topologicalList;
     }
 
-    public static boolean ScheduleringBacktrackingAndPruning(SchedulerHelper scheduler, int index) {
+    public static boolean SchedulingBacktrackingAndPruning(SchedulerHelper scheduler, int index) {
         if (scheduler.isComplete())
             return true;
         Course currentCourse = scheduler.getNextCourse(index);
@@ -85,7 +125,7 @@ public class CoreService {
                 continue;
 
             scheduler.assign(currentCourse, slot);
-            if (ScheduleringBacktrackingAndPruning(scheduler, index + 1))
+            if (SchedulingBacktrackingAndPruning(scheduler, index + 1))
                 return true;
 
             scheduler.unassign(currentCourse);
