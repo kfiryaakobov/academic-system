@@ -77,7 +77,7 @@ public class MongoView extends VerticalLayout {
         lecturersGrid = new Grid<>(Lecturer.class);
         lecturersGrid.setItems(lecturerService.getAllLectuurer());
         lecturersGrid.getStyle().setBorder("1px solid gray");
-        lecturersGrid.setColumns("name","ID","unavailableSlots");
+        lecturersGrid.setColumns("name","ID","password","unavailableSlots");
         add(lecturersGrid);
 
         scheduleGrid = new Grid<>();

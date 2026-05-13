@@ -22,7 +22,7 @@ import kfiry.academic_system.datamodels.User;
 import kfiry.academic_system.services.UserService;
 
 @Route("/register")
-public class RegisterViewStudent extends VerticalLayout {
+public class RegisterStudentView extends VerticalLayout {
 
     private TextField username;
     private PasswordField password;
@@ -32,7 +32,7 @@ public class RegisterViewStudent extends VerticalLayout {
     private RadioButtonGroup<String> gender;
     private UserService userService;
 
-    public RegisterViewStudent(UserService userService) {
+    public RegisterStudentView(UserService userService) {
         // =====================================================
         // MAIN LAYOUT (FULL SCREEN BACKGROUND)
         // =====================================================

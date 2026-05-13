@@ -46,8 +46,8 @@ public class MongoService {
         timesYotam.add(time4);
 
         // ========== Lecturer ==========
-        Lecturer lecturer1 = new Lecturer("David Gerber", "232784029", timesDavid);
-        Lecturer lecturer2 = new Lecturer("Yotam Eli", "462829473", timesYotam);
+        Lecturer lecturer1 = new Lecturer("David Gerber", "232784029","123456", timesDavid);
+        Lecturer lecturer2 = new Lecturer("Yotam Eli", "462829473","yotam222", timesYotam);
 
         lecturerRepository.insert(lecturer1);
         lecturerRepository.insert(lecturer2);

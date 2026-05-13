@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Route("/choose")
-public class ChooseCourseForStudent extends VerticalLayout {
+public class ChooseCourseForStudentView extends VerticalLayout {
 
     private MongoService mongoService;
     private UserService userService;
@@ -39,7 +39,7 @@ public class ChooseCourseForStudent extends VerticalLayout {
     private Button finishChooseBtn;
     private Set<Course> selectedCourses;
 
-    public ChooseCourseForStudent(MongoService mongoService, UserService userService) {
+    public ChooseCourseForStudentView(MongoService mongoService, UserService userService) {
         this.mongoService = mongoService;
         this.userService = userService;
         allCourses = mongoService.getAllCourses();

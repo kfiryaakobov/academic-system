@@ -14,7 +14,7 @@ import kfiry.academic_system.repositories.UserRepository;
 
 @Service
 public class UserService {
-    public UserRepository userRepo;
+    private UserRepository userRepo;
     private CourseRepository courseRepo;
 
     /**

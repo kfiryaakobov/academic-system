@@ -20,4 +20,12 @@ public class LecturerService {
    {
       return (ArrayList<Lecturer>)lecturerRepo.findAll();
    }
+
+   public Lecturer authenticateLecturer(String ID, String password) throws Exception {
+        Lecturer lecturer = lecturerRepo.findByID(ID);
+        if (lecturer == null || !lecturer.getPassword().equals(password)) {
+            throw new Exception("שם משתמש או סיסמה שגויים");
+        }
+        return lecturer;
+    } 
 }

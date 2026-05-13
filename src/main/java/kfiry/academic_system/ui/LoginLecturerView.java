@@ -1,22 +1,32 @@
 package kfiry.academic_system.ui;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
+
+import kfiry.academic_system.datamodels.Lecturer;
+import kfiry.academic_system.services.LecturerService;
+
 
 @Route("/loginLecturer")
-public class LoginLecturer extends HorizontalLayout {
+public class LoginLecturerView extends HorizontalLayout {
 
-    private TextField username;
+    private TextField id;
     private PasswordField password;
+    private LecturerService lecturerService;
 
-    public LoginLecturer() {
+    public LoginLecturerView(LecturerService lecturerService) {
 
+        this.lecturerService = lecturerService;
         setSizeFull();
         setSpacing(false);
         setPadding(false);
@@ -63,10 +73,10 @@ public class LoginLecturer extends HorizontalLayout {
                 .set("color", "black")
                 .set("font-size", "42px");
 
-        username = new TextField();
-        username.setPlaceholder("Username");
-        username.setWidthFull();
-        username.getStyle()
+        id = new TextField();
+        id.setPlaceholder("ID");
+        id.setWidthFull();
+        id.getStyle()
                 .set("background", "rgba(255,255,255,0.2)")
                 .set("border-radius", "20px")
                 .set("backdrop-filter", "blur(10px)");
@@ -92,8 +102,7 @@ public class LoginLecturer extends HorizontalLayout {
                 .set("font-weight", "bold")// עובי הטקסט
                 .set("background", "linear-gradient(90deg, #f3d61b, #a7ef2c)");// נותן רקע עם מעבר צבעים. מתחיל צהוב חזק
                                                                                // והולך ומתחזק
-
-        form.add(title, username, password, loginButton);
+        form.add(title, id, password, loginButton);
 
         leftSide.add(form);
 
@@ -104,7 +113,22 @@ public class LoginLecturer extends HorizontalLayout {
     }
 
     private void moveToHomePage() {
-        //בדיקה אם קיים ואבטחה - הצפנה
-        //לעבור לעמוד הבית
+        String lecturerId = id.getValue();
+        String pw = password.getValue();
+        // validation check
+        // צריך לבדוק אם המתשמש קיים במערכת
+        if (lecturerId == null || pw == null || pw.length() < 6){
+            //יש הדפסה בכל מקרה בפונקציה של בדיקת המרצה
+        }
+        try {
+            Lecturer lecturer = lecturerService.authenticateLecturer(lecturerId, pw);
+            VaadinSession.getCurrent().setAttribute("lecturer", lecturer);
+            UI.getCurrent().navigate("/homeLecturer"); // מעבר לדף הביתם
+            Notification.show("Lecturer login Ok!", 3000, Position.MIDDLE);
+
+        } catch (Exception exp) {
+            exp.printStackTrace();
+            Notification.show("" + exp.getMessage(), 5000,Position.MIDDLE);
+        }
     }
 }

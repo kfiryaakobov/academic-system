@@ -48,7 +48,7 @@ public class AppLayoutStudent extends AppLayout {
         HorizontalLayout menu = new HorizontalLayout();
         menu.setSpacing(true);
         menu.add(
-                new RouterLink("דף הבית", HomeView.class),
+                new RouterLink("דף הבית", HomeStudentView.class),
                 new RouterLink("מסך התחברות", LoginView.class));
 
         // 3. שמאל: פרטי משתמש ואוואטר

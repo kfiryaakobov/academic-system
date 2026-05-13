@@ -30,14 +30,14 @@ import java.util.Map;
 import java.util.Random;
 
 @Route(value = "/home", layout = AppLayoutStudent.class)
-public class HomeView extends HorizontalLayout {
+public class HomeStudentView extends HorizontalLayout {
 
     private HomeServiceStudent homeServiceStudent;
     private List<Course> studentCourses;
     private CoreService coreService;
     private Div calendarGrid;
 
-    public HomeView(HomeServiceStudent homeServiceStudent, CoreService coreService) {
+    public HomeStudentView(HomeServiceStudent homeServiceStudent, CoreService coreService) {
         // הגדרות כלליות למסך
         this.homeServiceStudent = homeServiceStudent;
         this.coreService = coreService;

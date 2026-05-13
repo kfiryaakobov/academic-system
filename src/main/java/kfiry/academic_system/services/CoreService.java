@@ -20,6 +20,7 @@ import kfiry.academic_system.utilities.TopologicalHelper;
 @Service
 public class CoreService {
     private MongoService mongoService;
+    //private Map<Course, TimeSlot> globalSchedule = new HashMap<>();
 
     public CoreService(MongoService mongoService) {
         this.mongoService = mongoService;

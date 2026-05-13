@@ -8,11 +8,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Lecturer {
     private String name;
     private String ID;
+    private String password;
     private Set<TimeSlot> unavailableSlots;// = new HashSet<>(); -----> not null
 
-    public Lecturer(String name, String ID, Set<TimeSlot> unavailableSlots) {
+    public Lecturer(String name, String ID, String password, Set<TimeSlot> unavailableSlots) {
         this.name = name;
         this.ID = ID;
+        this.password = password;
         this.unavailableSlots = unavailableSlots;// הבעיה נפתרת אם תסתכל למעלה - במידה ומכניסים לערך זה נאל , התוכנית
                                                  // תקרוס. אפשר להכניס תנאי אם אבל לברר עם אילן לפני
     }
@@ -33,6 +35,13 @@ public class Lecturer {
 
     public void setID(String iD) {
         ID = iD;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Set<TimeSlot> getUnavailableSlots() {
