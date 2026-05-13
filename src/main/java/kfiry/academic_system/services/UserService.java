@@ -2,6 +2,8 @@ package kfiry.academic_system.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -25,10 +27,11 @@ public class UserService {
     }
 
     public void insertUser(User user) throws Exception {
-        if (userRepo.existsById(user.getUsername()))
-            throw new Exception("User allredy exixt!");
+        // בודקים לפי המייל (Id)
+        if (userRepo.existsById(user.getEmail()))
+            throw new Exception("User already exists!");
 
-        userRepo.insert(user);
+        userRepo.save(user); // save בטוח יותר מ-insert
     }
 
     // R (Read/Retrive)
@@ -39,4 +42,40 @@ public class UserService {
     public List<Course> getStudentCourses(User user) {
         return courseRepo.findAllById(user.getCourseIds());
     }
+
+    // הרשמה - הכנסת נתונים בסיסים
+    public boolean registerNewUser(User user) {
+        if (userRepo.findByEmail(user.getEmail()).isPresent()) {
+            return false;
+        }
+        userRepo.save(user);
+        return true;
+    }
+
+    // המשך הרשמה - הכנסת קורסים אל תוך המשתמש
+    public User addCoursesForUser(String email, Set<Course> courses) {
+        Optional<User> userOpt = userRepo.findById(email);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+
+            // הפיכת הקורסים לרשימת ID
+            List<String> ids = new ArrayList<>();
+            for (Course course : courses) {
+                ids.add(course.getCourseID());
+            }
+            user.setCourseIds(new ArrayList<>(ids));
+            return userRepo.save(user);
+        }
+        return null;
+    }
+
+    // התחברות
+    public User authenticate(String username, String password) throws Exception {
+        User user = userRepo.findByUsername(username);
+        if (user == null || !user.getPassword().equals(password)) {
+            throw new Exception("שם משתמש או סיסמה שגויים");
+        }
+        return user;
+    }
+
 }

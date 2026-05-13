@@ -48,13 +48,11 @@ public class AppLayoutStudent extends AppLayout {
         HorizontalLayout menu = new HorizontalLayout();
         menu.setSpacing(true);
         menu.add(
-                new RouterLink("דף הבית", HomeViewStudent.class),
+                new RouterLink("דף הבית", HomeView.class),
                 new RouterLink("מסך התחברות", LoginView.class));
 
         // 3. שמאל: פרטי משתמש ואוואטר
         String username = (String) VaadinSession.getCurrent().getAttribute("username");
-        if (username == null)
-            username = "Guest";
 
         userAvatar = new Avatar(username);
         userInfo = new Span("שלום, " + username);

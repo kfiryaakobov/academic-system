@@ -11,13 +11,12 @@ import kfiry.academic_system.repositories.CourseRepository;
 public class CourseService {
     public CourseRepository courseRepo;
 
-    public CourseService(CourseRepository courseRepo){
+    public CourseService(CourseRepository courseRepo) {
         this.courseRepo = courseRepo;
     }
 
     // R (Read/Retrive)
-   public ArrayList<Course> getAllCourses()
-   {
-      return (ArrayList<Course>)courseRepo.findAll();
-   }
+    public ArrayList<Course> getAllCourses() {
+        return (ArrayList<Course>) courseRepo.findAll();
+    }
 }

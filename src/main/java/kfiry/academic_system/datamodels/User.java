@@ -5,12 +5,29 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import org.springframework.data.annotation.Id;
+
 @Document(collection = "Users")
 public class User {
+
+    @Id 
+    private String email;
     private String username;
     private String password;
+    private String phone;
+    private int age;
     private ArrayList<String> courseIds = new ArrayList<>();
     private int semester;
+
+    public User(String username, String password,String email, String phone , int age, ArrayList<String> courseIds, int semester) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.age = age;
+        this.courseIds = courseIds;
+        this.semester = semester;
+    }
 
     public User(String username, String password, ArrayList<String> courseIds, int semester) {
         this.username = username;
@@ -19,7 +36,6 @@ public class User {
         this.semester = semester;
     }
     
-
     public User(String username, String password) {
         this.username = username;
         this.password = password;
@@ -45,12 +61,36 @@ public class User {
         this.password = password;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     public List<String> getCourseIds() {
         return courseIds;
     }
 
-    public void setCourseIds(ArrayList<String> courseIds) {
-        this.courseIds = courseIds;
+    public void setCourseIds(List<String> courseIds) {
+        this.courseIds = new ArrayList<>(courseIds);
     }
 
     public void enrollCourse(String courseId) {

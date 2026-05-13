@@ -87,7 +87,6 @@ public class SchedulerHelper {
         return assignments.get(course);
     }
 
-
     public void printAssignments() {
         System.out.println("--- FINAL SCHEDULE ---");
         for (Map.Entry<Course, TimeSlot> entry : assignments.entrySet()) {
@@ -100,6 +99,10 @@ public class SchedulerHelper {
                             t.getStartHour() + ":00-" +
                             t.getEndHour() + ":00");
         }
+    }
+
+    public Map<Course, TimeSlot> getAssignments() {
+        return assignments;
     }
 
 }

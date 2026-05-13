@@ -1,8 +1,10 @@
 package kfiry.academic_system.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
@@ -37,7 +39,8 @@ public class CoreService {
         }
         // הוספת קשרי prerequisite
         for (Course course : userCourses) {
-            if (course.getPrerequisites() == null) continue;
+            if (course.getPrerequisites() == null)
+                continue;
             for (String prereqId : course.getPrerequisites()) {
                 if (userCourseIds.contains(prereqId)) {
                     Course prereqCourse = findCourseById(userCourses, prereqId);
@@ -62,12 +65,26 @@ public class CoreService {
         }
         return null;
     }
-    
 
-    public List<String> runCoreAndReturnStrings(String username) {
+    public Map<Course, TimeSlot> runAlgorithm(User u) {
+        CourseGraph graph = buildGraphForUser(u.getUsername());
+        List<Course> orderedCourses = topologicalSort(graph);
+        SchedulerHelper scheduler = new SchedulerHelper();
+        scheduler.setTopologicCourses(orderedCourses);
+
+        boolean success = SchedulingBacktrackingAndPruning(scheduler, 0);
+
+        if (!success) {
+            return new HashMap<>();
+        }
+
+        return scheduler.getAssignments();
+    }
+
+    public List<String> runCoreAndReturnStrings(User u) {
         List<String> result = new ArrayList<>();
         // 1. בניית גרף למשתמש
-        CourseGraph graph = buildGraphForUser(username);
+        CourseGraph graph = buildGraphForUser(u.getUsername());
         // 2. מיון טופולוגי
         List<Course> orderedCourses = topologicalSort(graph);
         // 3. יצירת scheduler
@@ -87,11 +104,10 @@ public class CoreService {
             TimeSlot slot = scheduler.getAssignment(course);
             if (slot != null) {
                 result.add(
-                    course.getName() + " | " +
-                    slot.getDay() + " " +
-                    slot.getStartHour() + ":00-" +
-                    slot.getEndHour() + ":00"
-                );
+                        course.getName() + " | " +
+                                slot.getDay() + " " +
+                                slot.getStartHour() + ":00-" +
+                                slot.getEndHour() + ":00");
             }
         }
         return result;

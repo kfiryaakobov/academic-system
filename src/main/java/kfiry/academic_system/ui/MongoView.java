@@ -22,7 +22,7 @@ import kfiry.academic_system.services.LecturerService;
 import kfiry.academic_system.services.MongoService;
 import kfiry.academic_system.services.UserService;
 
-@Route("/Mongo")
+@Route("/mongo")
 public class MongoView extends VerticalLayout {
     private UserService userService;
     private CoreService coreService;
@@ -62,7 +62,7 @@ public class MongoView extends VerticalLayout {
         usersGrid = new Grid<>(User.class);
         usersGrid.setItems(userService.getAllUsers());
         usersGrid.getStyle().setBorder("1px solid gray");
-        usersGrid.setColumns("username", "password","semester");
+        usersGrid.setColumns("username", "password","email", "phone","age", "semester");
         usersGrid.addColumn(user -> String.join(", ", user.getCourseIds())).setHeader("Courses").setFlexGrow(3);
         add(usersGrid);
         
@@ -89,7 +89,7 @@ public class MongoView extends VerticalLayout {
 
     private void privateSchedule() {
         User user = userService.getAllUsers().get(0);
-        List<String> scheduleOutput = coreService.runCoreAndReturnStrings(user.getUsername());
+        List<String> scheduleOutput = coreService.runCoreAndReturnStrings(user);
         scheduleGrid.setItems(scheduleOutput);
     }
 
