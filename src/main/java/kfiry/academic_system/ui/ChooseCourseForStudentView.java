@@ -12,6 +12,8 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 
@@ -28,7 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Route("/choose")
-public class ChooseCourseForStudentView extends VerticalLayout {
+public class ChooseCourseForStudentView extends VerticalLayout implements BeforeEnterObserver{
 
     private MongoService mongoService;
     private UserService userService;
@@ -251,5 +253,16 @@ public class ChooseCourseForStudentView extends VerticalLayout {
             case 2 -> "#50C878";
             default -> "#FFB347";
         };
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        Object user = VaadinSession.getCurrent().getAttribute("user");
+        
+        // אם התיק ריק (המשתמש לא קיים / לא התחבר)
+        if (user == null) {
+            // "זורקים" אותו חזרה למסך ההתחברות של הסטודנטים
+            event.forwardTo(LoginView.class); 
+        }
     }
 }

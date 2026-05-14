@@ -6,7 +6,6 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -15,7 +14,7 @@ import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
 import kfiry.academic_system.datamodels.Course;
-import kfiry.academic_system.datamodels.TimeSlot;
+import kfiry.academic_system.datamodels.ScheduleDocument;
 import kfiry.academic_system.datamodels.User;
 import kfiry.academic_system.services.CoreService;
 import kfiry.academic_system.services.HomeServiceStudent;
@@ -75,7 +74,6 @@ public class HomeStudentView extends HorizontalLayout {
         calendar.setWidthFull();
         calendar.addClassNames(LumoUtility.Margin.Top.MEDIUM);
 
-        // כרטיס פילטרים
         Button runAlgButton = new Button("runAlgoritemButton");
 
         runAlgButton.setWidthFull();
@@ -270,7 +268,7 @@ public class HomeStudentView extends HorizontalLayout {
         Span nameSpan = new Span(name);
         nameSpan.addClassName(LumoUtility.FontSize.SMALL);
 
-        HorizontalLayout row = new HorizontalLayout(new Icon(VaadinIcon.CLOSE_SMALL), nameSpan, dot);
+        HorizontalLayout row = new HorizontalLayout(nameSpan, dot);
         row.setWidthFull();
         row.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
         row.setAlignItems(FlexComponent.Alignment.CENTER);
@@ -304,33 +302,60 @@ public class HomeStudentView extends HorizontalLayout {
     }
 
     private void privateSchedule() {
-        User user = (User) VaadinSession.getCurrent().getAttribute("user");
+    User user = (User) VaadinSession.getCurrent().getAttribute("user");
+    if (user == null || studentCourses == null)
+        return;
 
-        if (user == null) {
-            return;
-        }
+    // 1. שולפים את המערכת הכללית ממסד הנתונים (במקום להריץ את האלגוריתם מחדש)
+    ScheduleDocument globalSchedule = coreService.getGlobalSchedule();
+    
+    if (globalSchedule == null || globalSchedule.getCourseToSlot() == null) {
+        System.out.println("No global schedule found in DB!");
+        return;
+    }
 
-        Map<Course, TimeSlot> assignments = coreService.runAlgorithm(user);
-        Random random = new Random();
-        for (Map.Entry<Course, TimeSlot> entry : assignments.entrySet()) {
-            Course course = entry.getKey();
-            TimeSlot slot = entry.getValue();
-            int column = convertDayToColumn(slot.getDay());
-            int startRow = slot.getStartHour() - 6;
-            int rowSpan = slot.getEndHour() - slot.getStartHour();
-            String randomColor = generateLightColor();
-            calendarGrid.add(
-                    createEventCard(
-                            course.getName(),
-                            slot.getStartHour() + ":00-"
-                                    + slot.getEndHour() + ":00",
-                            course.getLecturer().getName(),
-                            randomColor,
-                            column,
-                            startRow,
-                            rowSpan));
+    Map<String, String> globalAssignments = globalSchedule.getCourseToSlot();
+
+    // ניקוי הגריד לפני שמציירים מחדש (אופציונלי, מומלץ כדי למנוע כפילויות בלחיצות חוזרות)
+    // הערה: תצטרך לנקות רק את כרטיסיות הקורסים ולא את שורות הרקע/שעות, 
+    // או לבנות את גריד השעות מחדש אם אתה מנקה את הכל.
+
+    // 2. עוברים על הקורסים של הסטודנט ומציירים אותם על הלוח לפי השעות הכלליות
+    for (Course course : studentCourses) {
+        String courseId = course.getCourseID();
+        
+        // בודקים מתי הקורס משובץ במערכת הכללית
+        if (globalAssignments.containsKey(courseId)) {
+            String timeString = globalAssignments.get(courseId); // לדוגמה: "MONDAY 8:00-9:00"
+            
+            // חילוץ היום והשעות מתוך המחרוזת שנשמרה ב-DB
+            try {
+                String[] parts = timeString.split(" ");
+                DayOfWeek day = DayOfWeek.valueOf(parts[0]);
+                
+                String[] hours = parts[1].split("-");
+                int startHour = Integer.parseInt(hours[0].split(":")[0]);
+                int endHour = Integer.parseInt(hours[1].split(":")[0]);
+
+                int column = convertDayToColumn(day);
+                int startRow = startHour - 6;
+                int rowSpan = endHour - startHour;
+
+                calendarGrid.add(
+                        createEventCard(
+                                course.getName(),
+                                timeString.split(" ")[1], // רק השעות (למשל "8:00-9:00")
+                                course.getLecturer() != null ? course.getLecturer().getName() : "Unknown",
+                                generateLightColor(),
+                                column,
+                                startRow,
+                                rowSpan));
+            } catch (Exception e) {
+                System.out.println("Error parsing time string for course: " + courseId + " -> " + timeString);
+            }
         }
     }
+}
 
     private int convertDayToColumn(DayOfWeek day) {
         return switch (day) {
@@ -352,6 +377,6 @@ public class HomeStudentView extends HorizontalLayout {
 
         return String.format(
                 "#%02x%02x%02x",
-                red,green,blue);
+                red, green, blue);
     }
 }

@@ -22,21 +22,29 @@ public class SchedulerHelper {
     public boolean canAssign(Course course, TimeSlot timeSlot) {
         Lecturer lecturer = course.getLecturer();
 
-        for (TimeSlot unavailable : lecturer.getUnavailableSlots()) {
-            if (unavailable.overlaps(timeSlot)) {
-                return false;
+        // 1. בדיקת זמינות מרצה
+        boolean available = false;
+        for (TimeSlot slot : lecturer.getAvailableSlots()) {
+            if (slot.overlaps(timeSlot)) {
+                available = true;
+                break;
             }
         }
+        if (!available)
+            return false;
 
+        // 2. בדיקת התנגשויות מרצה אחרים
         for (TimeSlot assigned : assignments.values()) {
             if (assigned.overlaps(timeSlot)) {
                 return false;
             }
         }
 
+        // 3. לא משבצים פעמיים קורס
         if (assignments.containsKey(course)) {
             return false;
         }
+
         return true;
     }
 

@@ -68,7 +68,7 @@ public class LoginView extends HorizontalLayout {
         form.setPadding(false);
         form.setSpacing(true);
 
-        H1 title = new H1("Sign In");
+        H1 title = new H1("Login");
         title.getStyle()
                 .set("color", "black")
                 .set("font-size", "42px");

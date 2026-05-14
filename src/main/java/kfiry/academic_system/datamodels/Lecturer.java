@@ -1,24 +1,24 @@
 package kfiry.academic_system.datamodels;
 
 import java.util.Set;
-
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "Lecturers")
 public class Lecturer {
+
     private String name;
     private String ID;
     private String password;
-    private Set<TimeSlot> unavailableSlots;// = new HashSet<>(); -----> not null
+    private Set<TimeSlot> availableSlots;
 
-    public Lecturer(String name, String ID, String password, Set<TimeSlot> unavailableSlots) {
+    public Lecturer(String name, String ID, String password, Set<TimeSlot> availableSlots) {
         this.name = name;
         this.ID = ID;
         this.password = password;
-        this.unavailableSlots = unavailableSlots;// הבעיה נפתרת אם תסתכל למעלה - במידה ומכניסים לערך זה נאל , התוכנית
-                                                 // תקרוס. אפשר להכניס תנאי אם אבל לברר עם אילן לפני
+        this.availableSlots = availableSlots;
     }
-    public Lecturer(){
+
+    public Lecturer() {
     }
 
     public String getName() {
@@ -33,44 +33,43 @@ public class Lecturer {
         return ID;
     }
 
-    public void setID(String iD) {
-        ID = iD;
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public Set<TimeSlot> getUnavailableSlots() {
-        return unavailableSlots;
+    public Set<TimeSlot> getAvailableSlots() {
+        return availableSlots;
     }
 
-    public void setUnavailableSlots(Set<TimeSlot> unavailableSlots) {
-        this.unavailableSlots = unavailableSlots;
+    public void setAvailableSlots(Set<TimeSlot> availableSlots) {
+        this.availableSlots = availableSlots;
     }
 
-    // add a timeSlot for a Set(unavailableSlots)
-    public void addUnavailableSlot(TimeSlot timeSlot) {
-        unavailableSlots.add(timeSlot);
+    // הוספת זמן פנוי
+    public void addAvailableSlot(TimeSlot timeSlot) {
+        availableSlots.add(timeSlot);
     }
 
-    // return if lecturer can teach at the given time
+    // בדיקה אם המרצה יכול ללמד בזמן הזה
     public boolean isAvailable(TimeSlot time) {
-        for (TimeSlot timeSlot : unavailableSlots) {
-            if (timeSlot.overlaps(time)) {
-                return false;
+        for (TimeSlot slot : availableSlots) {
+            if (slot.overlaps(time)) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     @Override
     public String toString() {
-        return name; // או מה שאתה רוצה להציג
+        return name;
     }
-
 }
-

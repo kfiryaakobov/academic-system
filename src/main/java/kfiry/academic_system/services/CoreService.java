@@ -12,18 +12,21 @@ import org.springframework.stereotype.Service;
 
 import kfiry.academic_system.datamodels.Course;
 import kfiry.academic_system.datamodels.CourseGraph;
+import kfiry.academic_system.datamodels.ScheduleDocument;
 import kfiry.academic_system.datamodels.TimeSlot;
 import kfiry.academic_system.datamodels.User;
+import kfiry.academic_system.repositories.ScheduleRepository;
 import kfiry.academic_system.utilities.SchedulerHelper;
 import kfiry.academic_system.utilities.TopologicalHelper;
 
 @Service
 public class CoreService {
     private MongoService mongoService;
-    //private Map<Course, TimeSlot> globalSchedule = new HashMap<>();
+    private ScheduleRepository scheduleRepo;
 
-    public CoreService(MongoService mongoService) {
+    public CoreService(MongoService mongoService, ScheduleRepository scheduleRepo) {
         this.mongoService = mongoService;
+        this.scheduleRepo = scheduleRepo;
     }
 
     public CourseGraph buildGraphForUser(String username) {
@@ -67,6 +70,31 @@ public class CoreService {
         return null;
     }
 
+    public Map<Course, TimeSlot> runGlobalAlgorithm(List<Course> allCourses) {
+        CourseGraph graph = new CourseGraph();
+        for (Course course : allCourses) {
+            graph.addCourse(course);
+        }
+        for (Course course : allCourses) {
+            if (course.getPrerequisites() == null)
+                continue;
+            for (String prereqId : course.getPrerequisites()) {
+                Course prereqCourse = findCourseById(allCourses, prereqId);
+                if (prereqCourse != null) {
+                    graph.addPrerequisite(prereqCourse, course);
+                }
+            }
+        }
+        List<Course> orderedCourses = topologicalSort(graph);
+        SchedulerHelper scheduler = new SchedulerHelper();
+        scheduler.setTopologicCourses(orderedCourses);
+        boolean success = SchedulingBacktrackingAndPruning(scheduler, 0);
+        if (!success) {
+            return new HashMap<>();
+        }
+        return scheduler.getAssignments();
+    }
+
     public Map<Course, TimeSlot> runAlgorithm(User u) {
         CourseGraph graph = buildGraphForUser(u.getUsername());
         List<Course> orderedCourses = topologicalSort(graph);
@@ -78,8 +106,21 @@ public class CoreService {
         if (!success) {
             return new HashMap<>();
         }
+        for (Map.Entry<Course, TimeSlot> entry : scheduler.getAssignments().entrySet()) {
+            Course c = entry.getKey();
+            TimeSlot t = entry.getValue();
 
+            System.out.println(
+                    c.getCourseID() + " | " +
+                            t.getDay() + " " +
+                            t.getStartHour() + "-" +
+                            t.getEndHour());
+        }
         return scheduler.getAssignments();
+    }
+
+    public ScheduleDocument getGlobalSchedule() {
+        return scheduleRepo.findTopByOrderByIdDesc().orElse(null);
     }
 
     public List<String> runCoreAndReturnStrings(User u) {
