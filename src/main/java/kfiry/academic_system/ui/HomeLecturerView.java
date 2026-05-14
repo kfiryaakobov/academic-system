@@ -1,7 +1,9 @@
 package kfiry.academic_system.ui;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
@@ -15,7 +17,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
@@ -23,7 +24,7 @@ import kfiry.academic_system.datamodels.Course;
 import kfiry.academic_system.datamodels.Lecturer;
 import kfiry.academic_system.datamodels.ScheduleDocument;
 import kfiry.academic_system.services.CoreService;
-import kfiry.academic_system.services.HomeServiceLecturer;
+import kfiry.academic_system.services.HomeLecturerService;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -34,15 +35,15 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
-@Route(value = "/homeLecturer") 
+@Route(value = "/homeLecturer")
 public class HomeLecturerView extends VerticalLayout implements BeforeEnterObserver { // שינוי ל-Vertical והוספת הגנה
 
-    private HomeServiceLecturer homeServiceLecturer;
+    private HomeLecturerService homeServiceLecturer;
     private List<Course> lecturerCourses;
     private CoreService coreService;
     private Div calendarGrid;
 
-    public HomeLecturerView(HomeServiceLecturer homeServiceLecturer, CoreService coreService) {
+    public HomeLecturerView(HomeLecturerService homeServiceLecturer, CoreService coreService) {
         this.homeServiceLecturer = homeServiceLecturer;
         this.coreService = coreService;
 
@@ -110,10 +111,22 @@ public class HomeLecturerView extends VerticalLayout implements BeforeEnterObser
 
         // 2. אמצע: תפריט ניווט
         HorizontalLayout menu = new HorizontalLayout();
-        menu.setSpacing(true);
-        menu.add(
-                new RouterLink("דף הבית", HomeLecturerView.class),
-                new RouterLink("התנתקות", LoginLecturerView.class));
+        
+        // יצירת כפתור התנתקות
+        Button logoutButton = new Button("התנתקות");
+        logoutButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY); // העיצוב הזה מעלים את הרקע והמסגרת של הכפתור
+        logoutButton.getStyle().set("font-size", "var(--lumo-font-size-m)");
+
+        logoutButton.addClickListener(e -> {
+            // ניקוי מלא של התיק (הסשן) כולל כל המשתנים השמורים
+            VaadinSession.getCurrent().getSession().invalidate();
+            VaadinSession.getCurrent().close();
+
+            // ניווט חזרה למסך הלוגין
+            UI.getCurrent().navigate(LoginView.class);
+        });
+
+        menu.add(logoutButton);
 
         // 3. שמאל: פרטי המרצה
         Lecturer lecturer = (Lecturer) VaadinSession.getCurrent().getAttribute("lecturer");
@@ -165,15 +178,14 @@ public class HomeLecturerView extends VerticalLayout implements BeforeEnterObser
         LocalDate endOfWeek = startOfWeek.plusDays(5);
 
         DateTimeFormatter monthYearFormatter = DateTimeFormatter.ofPattern("MMMM yyyy", new Locale("he", "IL"));
-        
+
         // תיקון סדר התצוגה בעברית על ידי חלוקה ל-Spans
         H3 title = new H3();
         title.getStyle().set("display", "flex").set("gap", "6px").set("margin", "0");
         title.add(
-            new Span("(השבוע הנוכחי)"),
-            new Span(endOfWeek.format(monthYearFormatter)),
-            new Span(startOfWeek.getDayOfMonth() + "-" + endOfWeek.getDayOfMonth())        
-        );
+                new Span("(השבוע הנוכחי)"),
+                new Span(endOfWeek.format(monthYearFormatter)),
+                new Span(startOfWeek.getDayOfMonth() + "-" + endOfWeek.getDayOfMonth()));
 
         HorizontalLayout header = new HorizontalLayout();
         header.setWidthFull();
@@ -261,7 +273,7 @@ public class HomeLecturerView extends VerticalLayout implements BeforeEnterObser
                 LumoUtility.BoxShadow.SMALL);
 
         Lecturer lecturer = (Lecturer) VaadinSession.getCurrent().getAttribute("lecturer");
-        lecturerCourses = List.of(); 
+        lecturerCourses = List.of();
 
         if (lecturer != null) {
             H3 coursesTitle = new H3("הקורסים שאני מלמד");
@@ -280,7 +292,7 @@ public class HomeLecturerView extends VerticalLayout implements BeforeEnterObser
                     myCourses.add(createCourseRow(course.getName(), randomColor));
                 }
             } else {
-                 myCourses.add(new Span("אין קורסים רשומים"));
+                myCourses.add(new Span("אין קורסים רשומים"));
             }
         } else {
             myCourses.add(new Span("שגיאה: מרצה לא מחובר"));

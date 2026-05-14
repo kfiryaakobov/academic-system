@@ -228,6 +228,7 @@ public class RegisterStudentView extends VerticalLayout {
 
             boolean registerAns = userService.registerNewUser(user);
             if (registerAns == true) {
+                VaadinSession.getCurrent().setAttribute("user", user);
                 // העברת השם משתמש והמייל בשביל המשך הרישום
                 VaadinSession.getCurrent().setAttribute("email", user.getEmail());
                 VaadinSession.getCurrent().setAttribute("username", user.getUsername());

@@ -11,11 +11,11 @@ import kfiry.academic_system.repositories.UserRepository;
 import kfiry.academic_system.datamodels.User;
 
 @Service
-public class HomeServiceStudent {
+public class HomeStudentService {
     private CourseRepository courseRepo;
     private UserRepository userRepo;
 
-    public HomeServiceStudent(CourseRepository courseRepo, UserRepository userRepo) {
+    public HomeStudentService(CourseRepository courseRepo, UserRepository userRepo) {
         this.courseRepo = courseRepo;
         this.userRepo = userRepo;
     }

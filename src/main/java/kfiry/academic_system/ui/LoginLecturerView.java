@@ -2,6 +2,7 @@ package kfiry.academic_system.ui;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
@@ -13,7 +14,9 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 
+import kfiry.academic_system.datamodels.Admin;
 import kfiry.academic_system.datamodels.Lecturer;
+import kfiry.academic_system.services.AdminService;
 import kfiry.academic_system.services.LecturerService;
 
 
@@ -23,10 +26,13 @@ public class LoginLecturerView extends HorizontalLayout {
     private TextField id;
     private PasswordField password;
     private LecturerService lecturerService;
+    private Checkbox adminCheckbox;
+    private AdminService adminService;
 
-    public LoginLecturerView(LecturerService lecturerService) {
+    public LoginLecturerView(LecturerService lecturerService, AdminService adminService) {
 
         this.lecturerService = lecturerService;
+        this.adminService = adminService;
         setSizeFull();
         setSpacing(false);
         setPadding(false);
@@ -89,7 +95,10 @@ public class LoginLecturerView extends HorizontalLayout {
                 .set("border-radius", "20px")
                 .set("backdrop-filter", "blur(10px)");
 
-        Button loginButton = new Button("Sign In");
+        adminCheckbox = new Checkbox("התחבר כמנהל מערכת");
+        adminCheckbox.getStyle().set("margin-top", "10px");
+
+        Button loginButton = new Button("login");
         loginButton.setWidthFull();
         loginButton.addClickListener(clickEvent -> moveToHomePage());
 
@@ -102,7 +111,7 @@ public class LoginLecturerView extends HorizontalLayout {
                 .set("font-weight", "bold")// עובי הטקסט
                 .set("background", "linear-gradient(90deg, #f3d61b, #a7ef2c)");// נותן רקע עם מעבר צבעים. מתחיל צהוב חזק
                                                                                // והולך ומתחזק
-        form.add(title, id, password, loginButton);
+        form.add(title, id, password, adminCheckbox, loginButton);
 
         leftSide.add(form);
 
@@ -113,22 +122,25 @@ public class LoginLecturerView extends HorizontalLayout {
     }
 
     private void moveToHomePage() {
-        String lecturerId = id.getValue();
+        String inputId = id.getValue();
         String pw = password.getValue();
-        // validation check
-        // צריך לבדוק אם המתשמש קיים במערכת
-        if (lecturerId == null || pw == null || pw.length() < 6){
-            //יש הדפסה בכל מקרה בפונקציה של בדיקת המרצה
-        }
-        try {
-            Lecturer lecturer = lecturerService.authenticateLecturer(lecturerId, pw);
-            VaadinSession.getCurrent().setAttribute("lecturer", lecturer);
-            UI.getCurrent().navigate("/homeLecturer"); // מעבר לדף הביתם
-            Notification.show("Lecturer login Ok!", 3000, Position.MIDDLE);
 
+        try {
+            if (adminCheckbox.getValue()) {
+                // לוגיקת התחברות מנהל
+                Admin admin = adminService.authenticateAdmin(inputId, pw);
+                VaadinSession.getCurrent().setAttribute("admin", admin);
+                UI.getCurrent().navigate("/homeAdmin");
+                Notification.show("שלום המנהל " + admin.getName(), 3000, Position.MIDDLE);
+            } else {
+                // לוגיקת התחברות מרצה
+                Lecturer lecturer = lecturerService.authenticateLecturer(inputId, pw);
+                VaadinSession.getCurrent().setAttribute("lecturer", lecturer);
+                UI.getCurrent().navigate("/homeLecturer");
+                Notification.show("שלום המרצה " + lecturer.getName(), 3000, Position.MIDDLE);
+            }
         } catch (Exception exp) {
-            exp.printStackTrace();
-            Notification.show("" + exp.getMessage(), 5000,Position.MIDDLE);
+            Notification.show(exp.getMessage(), 5000, Position.MIDDLE);
         }
     }
 }

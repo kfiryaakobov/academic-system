@@ -15,16 +15,16 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.server.VaadinSession;
 
-import kfiry.academic_system.datamodels.User;
+import kfiry.academic_system.datamodels.Admin;
 
-public class AppLayoutStudent extends AppLayout {
+public class AppLayoutAdmin extends AppLayout {
 
     private VerticalLayout topNavbarPanel;
     private HorizontalLayout topNavbar;
     private Avatar userAvatar;
     private Span userInfo;
 
-    public AppLayoutStudent() {
+    public AppLayoutAdmin() {
         getElement().setAttribute("dir", "rtl");
         buildNavbar();
         addToNavbar(topNavbarPanel);
@@ -39,66 +39,50 @@ public class AppLayoutStudent extends AppLayout {
                 .set("border-bottom", "1px solid #eaeaea")
                 .set("background", "white");
 
-        // 1. ימין: לוגו וכותרת
+        // 1. ימין: לוגו וכותרת (צבע אדום למנהל)
         HorizontalLayout logo = new HorizontalLayout();
         Icon cap = VaadinIcon.ACADEMY_CAP.create();
-        cap.setColor("#1a56db");
-        H2 title = new H2("איזור אישי סטודנטים");
+        cap.setColor("#e11d48"); 
+        H2 title = new H2("איזור ניהול מערכת");
         title.getStyle().set("margin", "0").set("font-size", "var(--lumo-font-size-l)");
         logo.add(cap, title);
         logo.setAlignItems(Alignment.CENTER);
 
-        // 2. אמצע: תפריט ניווט
+        // 2. אמצע: תפריט ניווט וכפתור יציאה
         HorizontalLayout menu = new HorizontalLayout();
         menu.setSpacing(true);
-        menu.setAlignItems(Alignment.CENTER); // יישור אנכי כדי שהלינק והכפתור יהיו באותו גובה
-
-        // יצירת כפתור התנתקות
+        menu.setAlignItems(Alignment.CENTER);
+        
+        
         Button logoutButton = new Button("התנתקות");
-        logoutButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY); // העיצוב הזה מעלים את הרקע והמסגרת של הכפתור
+        logoutButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         logoutButton.getStyle().set("font-size", "var(--lumo-font-size-m)");
-
         logoutButton.addClickListener(e -> {
-            // ניקוי מלא של התיק (הסשן) כולל כל המשתנים השמורים
             VaadinSession.getCurrent().getSession().invalidate();
             VaadinSession.getCurrent().close();
-
-            // ניווט חזרה למסך הלוגין
-            UI.getCurrent().navigate(LoginView.class);
+            UI.getCurrent().navigate(LoginLecturerView.class);
         });
 
         menu.add(logoutButton);
 
-        // 3. שמאל: פרטי משתמש ואוואטר
-        User user = (User) VaadinSession.getCurrent().getAttribute("user");
-        String displayName = "אורח";
+        // 3. שמאל: פרטי מנהל ואוואטר
+        Admin admin = (Admin) VaadinSession.getCurrent().getAttribute("admin");
+        String adminName = admin != null ? admin.getName() : "מנהל";
 
-        if (user != null) {
-            // שליפת השם מתוך אובייקט המשתמש
-            displayName = user.getUsername();
-        }
-
-        userAvatar = new Avatar(displayName);
-        userInfo = new Span("שלום, " + displayName);
+        userAvatar = new Avatar(adminName);
+        userInfo = new Span("שלום, " + adminName);
         userInfo.getStyle().set("font-weight", "600");
 
         HorizontalLayout userSection = new HorizontalLayout(userInfo, userAvatar);
         userSection.setAlignItems(Alignment.CENTER);
 
-        // =========================
-        // איחוד הכל לשורה אחת
-        // =========================
+        // איחוד לשורה אחת
         topNavbar = new HorizontalLayout();
         topNavbar.setWidthFull();
         topNavbar.setAlignItems(Alignment.CENTER);
-
-        // זה מה שדוחף את החלקים לצדדים (ימין, אמצע, שמאל)
         topNavbar.setJustifyContentMode(JustifyContentMode.BETWEEN);
-
-        // הוספה לפי הסדר (מימין לשמאל בגלל ה-RTL)
         topNavbar.add(logo, menu, userSection);
 
-        // מוסיפים רק את ה-topNavbar לפאנל הראשי (בלי ה-userInfo הנפרד ובלי ה-Hr)
         topNavbarPanel.add(topNavbar);
     }
 }

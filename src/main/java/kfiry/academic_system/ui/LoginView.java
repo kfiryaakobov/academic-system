@@ -21,7 +21,7 @@ import kfiry.academic_system.services.UserService;
 @Route("/")
 public class LoginView extends HorizontalLayout {
 
-    private TextField username;
+    private TextField email;
     private PasswordField password;
     private UserService userService;
 
@@ -35,31 +35,32 @@ public class LoginView extends HorizontalLayout {
         // =====================================================
         // LEFT SIDE (IMAGE - 70%)
         // =====================================================
-        //יצירת דיב עבור הצד השמאלי. בצד זה תופיע התמונה
+        // יצירת דיב עבור הצד השמאלי. בצד זה תופיע התמונה
         Div leftSide = new Div();
         leftSide.setWidth("70%");
         leftSide.setHeightFull();
         leftSide.getStyle()
-                .set("background-image", "url('images/LoginPhoto.png')")//השם של התמונה
-                .set("background-size", "cover")//שלא ישארו שטחים ריקים על המסך גם אם זה אומר לחתוך אותם
-                .set("background-position", "center")//ממקם את התמונה במרכז של הדיב
-                .set("background-repeat", "no-repeat");//מונע מהתמונה להשתכפל - יכול להיות שהתמונה קטנה מידיי ואז היא תוצג פעמיים
+                .set("background-image", "url('images/LoginPhoto.png')")// השם של התמונה
+                .set("background-size", "cover")// שלא ישארו שטחים ריקים על המסך גם אם זה אומר לחתוך אותם
+                .set("background-position", "center")// ממקם את התמונה במרכז של הדיב
+                .set("background-repeat", "no-repeat");// מונע מהתמונה להשתכפל - יכול להיות שהתמונה קטנה מידיי ואז היא
+                                                       // תוצג פעמיים
 
         // =====================================================
         // RIGHT SIDE (LOGIN - 30%)
         // =====================================================
-        //יצירת דיב עבור הצד הימני. בצד זה יופיע מסך ההתחברות וההרשמה
+        // יצירת דיב עבור הצד הימני. בצד זה יופיע מסך ההתחברות וההרשמה
         Div rightSide = new Div();
         rightSide.setWidth("30%");
         rightSide.setHeightFull();
 
         rightSide.getStyle()
-                .set("display", "flex")//מאפשר למקם רכיבים בצורה נוחה
-                .set("justify-content", "center")//שהתוכן יהיה באמצע באמצע לרוחב ולא לאורך
+                .set("display", "flex")// מאפשר למקם רכיבים בצורה נוחה
+                .set("justify-content", "center")// שהתוכן יהיה באמצע באמצע לרוחב ולא לאורך
                 .set("align-items", "center")// ממרכז את התוכן בידיוק למרכז העמוד באנכיות
-                .set("background", "rgba(255, 255, 255, 0.08)")//נותן רקע לבן ושקוף. הפרמטר הרביעי הוא שקיפות
-                .set("backdrop-filter", "blur(25px)")//יוצר טשטוש עדין
-                .set("border-left", "1px solid rgba(255,255,255,0.2)");//יוצר קו גבול בין התמונה למסך הקלדת נתונים
+                .set("background", "rgba(255, 255, 255, 0.08)")// נותן רקע לבן ושקוף. הפרמטר הרביעי הוא שקיפות
+                .set("backdrop-filter", "blur(25px)")// יוצר טשטוש עדין
+                .set("border-left", "1px solid rgba(255,255,255,0.2)");// יוצר קו גבול בין התמונה למסך הקלדת נתונים
         // =====================================================
         // LOGIN FORM
         // =====================================================
@@ -73,10 +74,10 @@ public class LoginView extends HorizontalLayout {
                 .set("color", "black")
                 .set("font-size", "42px");
 
-        username = new TextField();
-        username.setPlaceholder("Username");
-        username.setWidthFull();
-        username.getStyle()
+        email = new TextField();
+        email.setPlaceholder("Email");
+        email.setWidthFull();
+        email.getStyle()
                 .set("background", "rgba(255,255,255,0.2)")
                 .set("border-radius", "20px")
                 .set("backdrop-filter", "blur(10px)");
@@ -95,13 +96,13 @@ public class LoginView extends HorizontalLayout {
 
         loginButton.getStyle()
                 .set("height", "50px")
-                .set("border-radius", "25px")//מעגל את הפינות של הכפתור
-                .set("border", "none")//מוריד את המסגרת של הכפתור מסביב
-                .set("color", "white")//מגדיר את צבע הטקסט כלבן
-                .set("font-size", "18px")//גודל הטקסט
-                .set("font-weight", "bold")//עובי הטקסט
-                .set("background", "linear-gradient(90deg, #6a5af9, #8f6dff)");//נותן רקע עם מעבר צבעים. מתחיל סגול חזק והולך ומתבהר
-
+                .set("border-radius", "25px")// מעגל את הפינות של הכפתור
+                .set("border", "none")// מוריד את המסגרת של הכפתור מסביב
+                .set("color", "white")// מגדיר את צבע הטקסט כלבן
+                .set("font-size", "18px")// גודל הטקסט
+                .set("font-weight", "bold")// עובי הטקסט
+                .set("background", "linear-gradient(90deg, #6a5af9, #8f6dff)");// נותן רקע עם מעבר צבעים. מתחיל סגול חזק
+                                                                               // והולך ומתבהר
 
         Button registerButton = new Button("Don't have an account? Sign up");
         registerButton.setWidthFull();
@@ -109,12 +110,13 @@ public class LoginView extends HorizontalLayout {
 
         registerButton.getStyle()
                 .set("height", "50px")
-                .set("border-radius", "25px")//מעגל את הפינות של הכפתור
-                .set("border", "none")//מוריד את המסגרת של הכפתור מסביב
-                .set("color", "linear-gradient(90deg, #6a5af9, #8f6dff)")//נותן טקסט עם מעבר צבעים. מתחיל סגול חזק והולך ומתבהר
-                .set("font-size", "18px")//גודל הטקסט
-                .set("font-weight", "bold")///עובי הטקסט
-                .set("background", "white");//רקע הכפתור - לבן
+                .set("border-radius", "25px")// מעגל את הפינות של הכפתור
+                .set("border", "none")// מוריד את המסגרת של הכפתור מסביב
+                .set("color", "linear-gradient(90deg, #6a5af9, #8f6dff)")// נותן טקסט עם מעבר צבעים. מתחיל סגול חזק
+                                                                         // והולך ומתבהר
+                .set("font-size", "18px")// גודל הטקסט
+                .set("font-weight", "bold")/// עובי הטקסט
+                .set("background", "white");// רקע הכפתור - לבן
 
         Button loginLecturerButton = new Button("Login Lecturer/Admin");
         loginLecturerButton.setWidthFull();
@@ -122,14 +124,15 @@ public class LoginView extends HorizontalLayout {
 
         loginLecturerButton.getStyle()
                 .set("height", "50px")
-                .set("border-radius", "25px")//מעגל את הפינות של הכפתור
-                .set("border", "none")//מוריד את המסגרת של הכפתור מסביב
-                .set("color", "black")//צבע הטקסט - שחור
-                .set("font-size", "18px")//גודל הטקסט
-                .set("font-weight", "bold")///עובי הטקסט
-                .set("background", "linear-gradient(90deg, #f3d61b, #a7ef2c)");//רקט הכפתור - נותן רקע עם מעבר צבעים. מתחיל צהוב חזק והולך ומתחזק
+                .set("border-radius", "25px")// מעגל את הפינות של הכפתור
+                .set("border", "none")// מוריד את המסגרת של הכפתור מסביב
+                .set("color", "black")// צבע הטקסט - שחור
+                .set("font-size", "18px")// גודל הטקסט
+                .set("font-weight", "bold")/// עובי הטקסט
+                .set("background", "linear-gradient(90deg, #f3d61b, #a7ef2c)");// רקט הכפתור - נותן רקע עם מעבר צבעים.
+                                                                               // מתחיל צהוב חזק והולך ומתחזק
 
-        form.add(title, username, password, loginButton, registerButton, loginLecturerButton);
+        form.add(title, email, password, loginButton, registerButton, loginLecturerButton);
 
         rightSide.add(form);
 
@@ -148,25 +151,22 @@ public class LoginView extends HorizontalLayout {
     }
 
     private void loginStudent() {
-        String un = username.getValue();
+        String emailValue = email.getValue();
         String pw = password.getValue();
-        // validation check
-        // צריך לבדוק אם המתשמש קיים במערכת
-        if (un == null || pw == null || un.length() < 6){
-            Notification.show("חובה למלא את שניהם ושהשם משתמש יהיה לפחות 6 תווים", 7000, Position.MIDDLE);
-            
+
+        if (emailValue == null || pw == null || !emailValue.contains("@")) {
+            Notification.show("חובה למלא אימייל תקין וסיסמה", 7000, Position.MIDDLE);
+            return;
         }
+
         try {
-            User user = userService.authenticate(un, pw);
-            VaadinSession.getCurrent().setAttribute("username", un);
+            User user = userService.authenticate(emailValue, pw);
+            // שמירת האימייל בסשן
             VaadinSession.getCurrent().setAttribute("email", user.getEmail());
             VaadinSession.getCurrent().setAttribute("user", user);
-            UI.getCurrent().navigate("/home"); // מעבר לדף הביתם
-            Notification.show("User login Ok!", 3000, Position.MIDDLE);
-
+            UI.getCurrent().navigate("/home");
         } catch (Exception exp) {
-            exp.printStackTrace();
-            Notification.show("" + exp.getMessage(), 5000,Position.MIDDLE);
+            Notification.show(exp.getMessage(), 5000, Position.MIDDLE);
         }
     }
 }

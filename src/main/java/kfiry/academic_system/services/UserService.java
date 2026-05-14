@@ -70,12 +70,13 @@ public class UserService {
     }
 
     // התחברות
-    public User authenticate(String username, String password) throws Exception {
-        User user = userRepo.findByUsername(username);
-        if (user == null || !user.getPassword().equals(password)) {
-            throw new Exception("שם משתמש או סיסמה שגויים");
+    public User authenticate(String email, String password) throws Exception {
+        // שימוש ב-findById כי האימייל הוא ה-Primary Key (Id)
+        Optional<User> userOpt = userRepo.findById(email);
+        if (userOpt.isEmpty() || !userOpt.get().getPassword().equals(password)) {
+            throw new Exception("אימייל או סיסמה שגויים");
         }
-        return user;
+        return userOpt.get();
     }
 
 }

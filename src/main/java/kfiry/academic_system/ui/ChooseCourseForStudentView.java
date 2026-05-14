@@ -7,6 +7,7 @@ import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
@@ -30,7 +31,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Route("/choose")
-public class ChooseCourseForStudentView extends VerticalLayout implements BeforeEnterObserver{
+public class ChooseCourseForStudentView extends VerticalLayout implements BeforeEnterObserver {
 
     private MongoService mongoService;
     private UserService userService;
@@ -63,6 +64,15 @@ public class ChooseCourseForStudentView extends VerticalLayout implements Before
                 .set("color", "#1a2a3a")
                 .set("flex-shrink", "0"); // מבטיח שהכותרת לא תתכווץ
         setAlignSelf(Alignment.CENTER, mainHeader);// הכותרת תהיה באמצע אופקית
+
+        H5 noticeLabel = new H5("* עדיף לבחור רק סמסטר 1");
+        noticeLabel.getStyle()
+                .set("color", "red")
+                .set("margin-top", "0"); // מצמיד אותו לכותרת מעל
+
+        // היישור ל-START גורם לו להיצמד לצד ימין (בגלל שהגדרנו RTL למסך)
+        setAlignSelf(Alignment.START, noticeLabel);
+
 
         // 2. לוח הסמסטרים (החלק העליון)
         HorizontalLayout boardLayout = new HorizontalLayout();
@@ -131,7 +141,7 @@ public class ChooseCourseForStudentView extends VerticalLayout implements Before
         mainContent.setFlexGrow(3, leftContent);
         mainContent.setFlexGrow(1, summaryColumn);
 
-        add(mainHeader, mainContent);
+        add(mainHeader, noticeLabel, mainContent);
         expand(mainContent); // גורם ל-mainContent למלא את כל הגובה הנותר ב-UI
     }
 
@@ -162,7 +172,7 @@ public class ChooseCourseForStudentView extends VerticalLayout implements Before
         return group;
     }
 
-    //יוצר את עמודת הסיכום בצד המסך
+    // יוצר את עמודת הסיכום בצד המסך
     private VerticalLayout createSummaryColumn() {
         VerticalLayout summary = new VerticalLayout();
         summary.setWidth("320px");
@@ -237,7 +247,7 @@ public class ChooseCourseForStudentView extends VerticalLayout implements Before
         }
     }
 
-    //הפונק' מקבלת מספר סמסטר ומחזירה שם בעברית. נגיד סמסטר 1 הופך לסמסטר א
+    // הפונק' מקבלת מספר סמסטר ומחזירה שם בעברית. נגיד סמסטר 1 הופך לסמסטר א
     private String getSemesterName(int i) {
         return switch (i) {
             case 1 -> "א'";
@@ -246,7 +256,7 @@ public class ChooseCourseForStudentView extends VerticalLayout implements Before
         };
     }
 
-    //פונק' מקבלת מספר סמסטר ומחזירה את הצבע עבורו. נגיד סמסטר 1 הופך לצבע כחול 
+    // פונק' מקבלת מספר סמסטר ומחזירה את הצבע עבורו. נגיד סמסטר 1 הופך לצבע כחול
     private String getSemesterColor(int i) {
         return switch (i) {
             case 1 -> "#4A90E2";
@@ -258,11 +268,11 @@ public class ChooseCourseForStudentView extends VerticalLayout implements Before
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         Object user = VaadinSession.getCurrent().getAttribute("user");
-        
+
         // אם התיק ריק (המשתמש לא קיים / לא התחבר)
         if (user == null) {
             // "זורקים" אותו חזרה למסך ההתחברות של הסטודנטים
-            event.forwardTo(LoginView.class); 
+            event.forwardTo(LoginView.class);
         }
     }
 }

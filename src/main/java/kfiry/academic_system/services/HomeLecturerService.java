@@ -10,10 +10,10 @@ import kfiry.academic_system.datamodels.Lecturer;
 import kfiry.academic_system.repositories.CourseRepository;
 
 @Service
-public class HomeServiceLecturer {
+public class HomeLecturerService {
     private CourseRepository courseRepo;
 
-    public HomeServiceLecturer(CourseRepository courseRepo) {
+    public HomeLecturerService(CourseRepository courseRepo) {
         this.courseRepo = courseRepo;
     }
 

@@ -6,8 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import kfiry.academic_system.repositories.AdminRepository;
 import org.springframework.stereotype.Service;
 
+import kfiry.academic_system.datamodels.Admin;
 import kfiry.academic_system.datamodels.Course;
 import kfiry.academic_system.datamodels.Lecturer;
 import kfiry.academic_system.datamodels.TimeSlot;
@@ -18,15 +20,17 @@ import kfiry.academic_system.repositories.UserRepository;
 
 @Service
 public class MongoService {
+    private final AdminRepository adminRepository;
     private CourseRepository courseRepository;
     private LecturerRepository lecturerRepository;
     private UserRepository userRepository;
 
     public MongoService(CourseRepository courseRepository, LecturerRepository lecturerRepository,
-            UserRepository userRepository) {
+            UserRepository userRepository, AdminRepository adminRepository) {
         this.courseRepository = courseRepository;
         this.lecturerRepository = lecturerRepository;
         this.userRepository = userRepository;
+        this.adminRepository = adminRepository;
     }
 
     public void firstSetUp() {
@@ -92,6 +96,9 @@ public class MongoService {
                 List.of("C1ML12", "C1WEB13", "C1MOB14", "C1SEC15", "C1DM17", "C1CAP20"));
         User user2 = new User("omriy", "1234", lst2, 2);
         userRepository.insert(user2);
+
+        Admin admin = new Admin("216232470", "123", "kfiry");
+        adminRepository.insert(admin);
     }
 
     public List<Course> getAllCourses() {

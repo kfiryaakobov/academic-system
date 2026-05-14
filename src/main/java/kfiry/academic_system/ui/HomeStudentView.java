@@ -12,12 +12,14 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 
 import kfiry.academic_system.datamodels.Course;
 import kfiry.academic_system.datamodels.ScheduleDocument;
 import kfiry.academic_system.datamodels.User;
 import kfiry.academic_system.services.CoreService;
-import kfiry.academic_system.services.HomeServiceStudent;
+import kfiry.academic_system.services.HomeStudentService;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -29,14 +31,14 @@ import java.util.Map;
 import java.util.Random;
 
 @Route(value = "/home", layout = AppLayoutStudent.class)
-public class HomeStudentView extends HorizontalLayout {
+public class HomeStudentView extends HorizontalLayout implements BeforeEnterObserver{
 
-    private HomeServiceStudent homeServiceStudent;
+    private HomeStudentService homeServiceStudent;
     private List<Course> studentCourses;
     private CoreService coreService;
     private Div calendarGrid;
 
-    public HomeStudentView(HomeServiceStudent homeServiceStudent, CoreService coreService) {
+    public HomeStudentView(HomeStudentService homeServiceStudent, CoreService coreService) {
         // הגדרות כלליות למסך
         this.homeServiceStudent = homeServiceStudent;
         this.coreService = coreService;
@@ -378,5 +380,14 @@ public class HomeStudentView extends HorizontalLayout {
         return String.format(
                 "#%02x%02x%02x",
                 red, green, blue);
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        User user = (User) VaadinSession.getCurrent().getAttribute("user");
+        if (user == null) {
+            // אם אין משתמש מחובר בסשן, המערכת תזרוק אותו אוטומטית למסך ההתחברות הראשי
+            event.forwardTo(LoginView.class);
+        }
     }
 }
