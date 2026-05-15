@@ -1,5 +1,7 @@
 package kfiry.academic_system.services;
 
+import java.util.ArrayList;
+
 import org.springframework.stereotype.Service;
 import kfiry.academic_system.datamodels.Admin;
 import kfiry.academic_system.repositories.AdminRepository;
@@ -10,6 +12,18 @@ public class AdminService {
 
     public AdminService(AdminRepository adminRepo) {
         this.adminRepo = adminRepo;
+    }
+    public void insertAdmin(Admin admin) throws Exception {
+        // בודקים לפי  (Id)
+        if (adminRepo.existsById(admin.getId()))
+            throw new Exception("admin already exists!");
+
+        adminRepo.save(admin); // save בטוח יותר מ-insert
+    }
+
+    // R (Read/Retrive)
+    public ArrayList<Admin> getAllAdmins() {
+        return (ArrayList<Admin>) adminRepo.findAll();
     }
 
     public Admin authenticateAdmin(String id, String password) throws Exception {

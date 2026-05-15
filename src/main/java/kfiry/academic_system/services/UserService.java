@@ -27,7 +27,7 @@ public class UserService {
     }
 
     public void insertUser(User user) throws Exception {
-        // בודקים לפי המייל (Id)
+        // בודקים לפי המייל 
         if (userRepo.existsById(user.getEmail()))
             throw new Exception("User already exists!");
 

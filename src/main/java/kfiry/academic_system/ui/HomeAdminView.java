@@ -35,9 +35,9 @@ import java.util.Random;
 @Route(value = "/homeAdmin", layout = AppLayoutAdmin.class)
 public class HomeAdminView extends HorizontalLayout implements BeforeEnterObserver {
 
-    private final CoreService coreService;
-    private final HomeAdminService homeAdminService;
-    private final ScheduleService scheduleService;
+    private CoreService coreService;
+    private HomeAdminService homeAdminService;
+    private ScheduleService scheduleService;
     private Div calendarGrid;
 
     public HomeAdminView(CoreService coreService, HomeAdminService homeAdminService, ScheduleService scheduleService) {

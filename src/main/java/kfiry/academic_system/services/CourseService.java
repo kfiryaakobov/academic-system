@@ -15,6 +15,14 @@ public class CourseService {
         this.courseRepo = courseRepo;
     }
 
+    public void insertCourse(Course course) throws Exception {
+        // בודקים לפי  (Id)
+        if (courseRepo.existsById(course.getCourseID()))
+            throw new Exception("course already exists!");
+
+        courseRepo.save(course); // save בטוח יותר מ-insert
+    }
+
     // R (Read/Retrive)
     public ArrayList<Course> getAllCourses() {
         return (ArrayList<Course>) courseRepo.findAll();

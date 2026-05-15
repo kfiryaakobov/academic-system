@@ -89,12 +89,12 @@ public class MongoService {
         // ========== User ==========
         ArrayList<String> lst1 = new ArrayList<>(
                 List.of("C1CS1", "C1C++2", "C1MATH1", "C1ALG4", "C1DS5", "C1LL10"));
-        User user1 = new User("kfiry", "123445678", lst1, 1);
+        User user1 = new User("kfiry", "123445678", lst1);
         userRepository.insert(user1);
 
         ArrayList<String> lst2 = new ArrayList<>(
                 List.of("C1ML12", "C1WEB13", "C1MOB14", "C1SEC15", "C1DM17", "C1CAP20"));
-        User user2 = new User("omriy", "1234", lst2, 2);
+        User user2 = new User("omriy", "1234", lst2);
         userRepository.insert(user2);
 
         Admin admin = new Admin("216232470", "123", "kfiry");

@@ -63,7 +63,28 @@ public class AppLayoutAdmin extends AppLayout {
             UI.getCurrent().navigate(LoginLecturerView.class);
         });
 
-        menu.add(logoutButton);
+        Button homeButton = new Button("מסך הבית");
+        homeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        homeButton.getStyle().set("font-size", "var(--lumo-font-size-m)");
+        homeButton.addClickListener(e -> {
+            UI.getCurrent().navigate(HomeAdminView.class);
+        });
+
+        Button addDataButton = new Button("מסך הוספת הנתונים");
+        addDataButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        addDataButton.getStyle().set("font-size", "var(--lumo-font-size-m)");
+        addDataButton.addClickListener(e -> {
+            UI.getCurrent().navigate(AdminAddDataView.class);
+        });
+
+        Button viewDataButton = new Button("מסך הצגת הנתונים");
+        viewDataButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        viewDataButton.getStyle().set("font-size", "var(--lumo-font-size-m)");
+        viewDataButton.addClickListener(e -> {
+            UI.getCurrent().navigate(AdminDataView.class);
+        });
+
+        menu.add(logoutButton, homeButton, addDataButton, viewDataButton);
 
         // 3. שמאל: פרטי מנהל ואוואטר
         Admin admin = (Admin) VaadinSession.getCurrent().getAttribute("admin");

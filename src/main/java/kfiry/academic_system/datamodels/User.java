@@ -17,23 +17,20 @@ public class User {
     private String phone;
     private int age;
     private ArrayList<String> courseIds = new ArrayList<>();
-    private int semester;
 
-    public User(String username, String password,String email, String phone , int age, ArrayList<String> courseIds, int semester) {
+    public User(String username, String password,String email, String phone , int age, ArrayList<String> courseIds) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.age = age;
         this.courseIds = courseIds;
-        this.semester = semester;
     }
 
-    public User(String username, String password, ArrayList<String> courseIds, int semester) {
+    public User(String username, String password, ArrayList<String> courseIds) {
         this.username = username;
         this.password = password;
         this.courseIds = courseIds;
-        this.semester = semester;
     }
     
     public User(String username, String password) {
@@ -103,13 +100,6 @@ public class User {
         courseIds.remove(courseId);
     }
 
-    public int getSemester() {
-        return semester;
-    }
-
-    public void setSemester(int semester) {
-        this.semester = semester;
-    }
 
     @Override
     public String toString() {

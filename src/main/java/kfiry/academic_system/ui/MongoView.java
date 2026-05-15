@@ -62,7 +62,7 @@ public class MongoView extends VerticalLayout {
         usersGrid = new Grid<>(User.class);
         usersGrid.setItems(userService.getAllUsers());
         usersGrid.getStyle().setBorder("1px solid gray");
-        usersGrid.setColumns("username", "password","email", "phone","age", "semester");
+        usersGrid.setColumns("username", "password","email", "phone","age");
         usersGrid.addColumn(user -> String.join(", ", user.getCourseIds())).setHeader("Courses").setFlexGrow(3);
         add(usersGrid);
         

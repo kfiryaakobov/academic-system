@@ -15,6 +15,14 @@ public class LecturerService {
         this.lecturerRepo = lecturerRepo;
     }
 
+    public void insertLectuurer(Lecturer lectuurer) throws Exception {
+        // בודקים לפי  (Id)
+        if (lecturerRepo.existsById(lectuurer.getID()))
+            throw new Exception("lectuurer already exists!");
+
+        lecturerRepo.save(lectuurer); // save בטוח יותר מ-insert
+    }
+
     // R (Read/Retrive)
    public ArrayList<Lecturer> getAllLectuurer()
    {
