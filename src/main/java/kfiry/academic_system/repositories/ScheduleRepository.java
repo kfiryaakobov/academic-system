@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ScheduleRepository extends MongoRepository<ScheduleDocument, String> {
-
     Optional<ScheduleDocument> findTopByOrderByIdDesc();
 }

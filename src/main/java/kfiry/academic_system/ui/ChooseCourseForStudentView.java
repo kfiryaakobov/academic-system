@@ -73,7 +73,6 @@ public class ChooseCourseForStudentView extends VerticalLayout implements Before
         // היישור ל-START גורם לו להיצמד לצד ימין (בגלל שהגדרנו RTL למסך)
         setAlignSelf(Alignment.START, noticeLabel);
 
-
         // 2. לוח הסמסטרים (החלק העליון)
         HorizontalLayout boardLayout = new HorizontalLayout();
         boardLayout.setWidthFull();

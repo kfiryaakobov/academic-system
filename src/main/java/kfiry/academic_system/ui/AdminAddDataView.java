@@ -30,9 +30,11 @@ import kfiry.academic_system.services.LecturerService;
 import kfiry.academic_system.services.UserService;
 
 import java.time.DayOfWeek;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 @Route(value = "/admin/add-data", layout = AppLayoutAdmin.class)
@@ -69,7 +71,7 @@ public class AdminAddDataView extends VerticalLayout implements BeforeEnterObser
         boardLayout.setWidthFull();
         boardLayout.setSpacing(true);
         boardLayout.setPadding(false);
-        // flex-wrap מאפשר לכרטיסים לרדת שורה אם המסך של המנהל צר מדי
+        // מאפשר לכרטיסים לרדת שורה אם המסך של המנהל צר מדי
         boardLayout.getStyle().set("flex-wrap", "wrap");
 
         // יצירת והוספת 4 הכרטיסים עם צבעים שונים
@@ -104,7 +106,7 @@ public class AdminAddDataView extends VerticalLayout implements BeforeEnterObser
 
         MultiSelectComboBox<Course> coursesPicker = new MultiSelectComboBox<>("שיוך קורסים");
         coursesPicker.setItems(courseService.getAllCourses());
-        coursesPicker.setItemLabelGenerator(Course::getName);
+        coursesPicker.setItemLabelGenerator(course -> course.getName());
 
         // הגדרה שכל השדות יתפסו את כל רוחב הכרטיס
         username.setWidthFull();
@@ -193,8 +195,8 @@ public class AdminAddDataView extends VerticalLayout implements BeforeEnterObser
 
         ComboBox<DayOfWeek> dayPicker = new ComboBox<>("יום");
         dayPicker.setItems(DayOfWeek.values());
-        dayPicker.setItemLabelGenerator(
-                day -> day.getDisplayName(java.time.format.TextStyle.FULL, new java.util.Locale("he")));
+        Locale hebrew = new Locale("he");
+        dayPicker.setItemLabelGenerator(day -> day.getDisplayName(TextStyle.FULL, hebrew));
 
         IntegerField startHour = new IntegerField("שעת התחלה");
         IntegerField endHour = new IntegerField("שעת סיום");
@@ -256,9 +258,7 @@ public class AdminAddDataView extends VerticalLayout implements BeforeEnterObser
             try {
                 // יצירת המרצה עם ה-Set של הזמנים שנאספו
                 Lecturer lecturer = new Lecturer(name.getValue(), idValue, password.getValue(), selectedSlots);
-
                 lecturerService.insertLectuurer(lecturer); // קריאה לסרוויס לשמירה
-
                 Notification.show("המרצה נשמר בהצלחה!");
 
                 // ניקוי כל השדות והרשימות
@@ -298,7 +298,7 @@ public class AdminAddDataView extends VerticalLayout implements BeforeEnterObser
         // 2. הוספת אפשרות לבחירת קורסי קדימות
         MultiSelectComboBox<Course> prerequisitesPicker = new MultiSelectComboBox<>("קורסי קדימות");
         prerequisitesPicker.setItems(courseService.getAllCourses());
-        prerequisitesPicker.setItemLabelGenerator(Course::getName);
+        prerequisitesPicker.setItemLabelGenerator(course -> course.getName());
 
         name.setWidthFull();
         courseID.setWidthFull();
@@ -344,15 +344,10 @@ public class AdminAddDataView extends VerticalLayout implements BeforeEnterObser
                 }
 
                 // יצירת הקורס החדש ושמירתו
-                Course course = new Course(
-                        name.getValue(),
-                        newID,
-                        duration.getValue(),
-                        lecturerCombo.getValue(),
-                        mandatory.getValue(),
-                        prereqIds);
+                Course course = new Course(name.getValue(), newID, duration.getValue(), lecturerCombo.getValue(),
+                        mandatory.getValue(), prereqIds);
 
-                courseService.insertCourse(course); // וודא שקיימת מתודה כזו ב-Service שלך
+                courseService.insertCourse(course);
                 Notification.show("הקורס נשמר בהצלחה במאגר!");
 
                 // ניקוי שדות הטופס לאחר הצלחה
@@ -423,7 +418,6 @@ public class AdminAddDataView extends VerticalLayout implements BeforeEnterObser
             }
 
             try {
-                // שיניתי כאן שישתמש ב-idValueAdmin שכבר שלפנו
                 Admin admin = new Admin(idValueAdmin, password.getValue(), name.getValue());
                 adminService.insertAdmin(admin);
                 Notification.show("המנהל נשמר בהצלחה!");

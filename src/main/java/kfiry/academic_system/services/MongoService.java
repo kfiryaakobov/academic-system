@@ -52,8 +52,8 @@ public class MongoService {
         timesYotam.add(time4);
 
         // ========== Lecturer ==========
-        Lecturer lecturer1 = new Lecturer("David Gerber", "232784029","123456", timesDavid);
-        Lecturer lecturer2 = new Lecturer("Yotam Eli", "462829473","yotam222", timesYotam);
+        Lecturer lecturer1 = new Lecturer("David Gerber", "232784029", "123456", timesDavid);
+        Lecturer lecturer2 = new Lecturer("Yotam Eli", "462829473", "yotam222", timesYotam);
 
         lecturerRepository.insert(lecturer1);
         lecturerRepository.insert(lecturer2);
@@ -63,12 +63,16 @@ public class MongoService {
         Course c1 = new Course("Intro Computer Science", "C1CS1", 1, lecturer1, true);
         Course c2 = new Course("C++ Programming", "C1C++2", 1, lecturer2, true, new ArrayList<>(List.of("C1CS1")));
         Course c3 = new Course("Mathematics I", "C1MATH1", 1, lecturer1, true);
-        Course c4 = new Course("Algorithms", "C1ALG4", 1, lecturer2, true, new ArrayList<>(List.of("C1C++2", "C1MATH1")));
-        Course c5 = new Course("Data Structures", "C1DS5", 1, lecturer1, true, new ArrayList<>(List.of("C1C++2", "C1MATH1")));
+        Course c4 = new Course("Algorithms", "C1ALG4", 1, lecturer2, true,
+                new ArrayList<>(List.of("C1C++2", "C1MATH1")));
+        Course c5 = new Course("Data Structures", "C1DS5", 1, lecturer1, true,
+                new ArrayList<>(List.of("C1C++2", "C1MATH1")));
         Course c6 = new Course("Databases", "C1DB6", 2, lecturer1, true, new ArrayList<>(List.of("C1C++2")));
-        Course c7 = new Course("Software Engineering", "C1SE7", 3, lecturer2, true, new ArrayList<>(List.of("C1ALG4", "C1DS5")));
+        Course c7 = new Course("Software Engineering", "C1SE7", 3, lecturer2, true,
+                new ArrayList<>(List.of("C1ALG4", "C1DS5")));
         Course c8 = new Course("Operating Systems", "C1OS8", 2, lecturer1, true, new ArrayList<>(List.of("C1DS5")));
-        Course c9 = new Course("Computer Networks", "C1CN9", 2, lecturer1, true, new ArrayList<>(List.of("C1DS5", "C1DB6")));
+        Course c9 = new Course("Computer Networks", "C1CN9", 2, lecturer1, true,
+                new ArrayList<>(List.of("C1DS5", "C1DB6")));
         Course c10 = new Course("Preparation for the first semester", "C1LL10", 1, lecturer2, false);
         Course c11 = new Course("AI Basics", "C1AI11", 3, lecturer1, true, new ArrayList<>(List.of("C1C++2")));
         Course c12 = new Course("Machine Learning", "C1ML12", 2, lecturer2, true, new ArrayList<>(List.of("C1C++2")));

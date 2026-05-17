@@ -19,7 +19,6 @@ import kfiry.academic_system.datamodels.Lecturer;
 import kfiry.academic_system.services.AdminService;
 import kfiry.academic_system.services.LecturerService;
 
-
 @Route("/loginLecturer")
 public class LoginLecturerView extends HorizontalLayout {
 
@@ -118,7 +117,7 @@ public class LoginLecturerView extends HorizontalLayout {
         // =====================================================
         // ADD BOTH SIDES
         // =====================================================
-        add(leftSide,rightSide);
+        add(leftSide, rightSide);
     }
 
     private void moveToHomePage() {

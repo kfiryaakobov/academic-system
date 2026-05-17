@@ -42,7 +42,7 @@ public class AppLayoutAdmin extends AppLayout {
         // 1. ימין: לוגו וכותרת (צבע אדום למנהל)
         HorizontalLayout logo = new HorizontalLayout();
         Icon cap = VaadinIcon.ACADEMY_CAP.create();
-        cap.setColor("#e11d48"); 
+        cap.setColor("#e11d48");
         H2 title = new H2("איזור ניהול מערכת");
         title.getStyle().set("margin", "0").set("font-size", "var(--lumo-font-size-l)");
         logo.add(cap, title);
@@ -52,8 +52,7 @@ public class AppLayoutAdmin extends AppLayout {
         HorizontalLayout menu = new HorizontalLayout();
         menu.setSpacing(true);
         menu.setAlignItems(Alignment.CENTER);
-        
-        
+
         Button logoutButton = new Button("התנתקות");
         logoutButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         logoutButton.getStyle().set("font-size", "var(--lumo-font-size-m)");

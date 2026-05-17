@@ -16,11 +16,11 @@ public class CourseService {
     }
 
     public void insertCourse(Course course) throws Exception {
-        // בודקים לפי  (Id)
+        // בודקים לפי (Id)
         if (courseRepo.existsById(course.getCourseID()))
             throw new Exception("course already exists!");
 
-        courseRepo.save(course); // save בטוח יותר מ-insert
+        courseRepo.save(course);
     }
 
     // R (Read/Retrive)

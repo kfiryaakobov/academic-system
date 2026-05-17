@@ -7,6 +7,5 @@ import kfiry.academic_system.datamodels.Lecturer;
 
 @Repository
 public interface LecturerRepository extends MongoRepository<Lecturer,String>{
-
     Lecturer findByID(String ID);
 }

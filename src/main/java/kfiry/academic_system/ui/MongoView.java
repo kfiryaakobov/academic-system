@@ -37,14 +37,14 @@ public class MongoView extends VerticalLayout {
     private Grid<String> scheduleGrid;
 
     public MongoView(UserService userService, CoreService coreService, MongoService mongoService,
-         CourseService courseService, LecturerService lecturerService) {
+            CourseService courseService, LecturerService lecturerService) {
         this.userService = userService;
         this.coreService = coreService;
         this.courseService = courseService;
         this.lecturerService = lecturerService;
 
         add(new H1("MongoView"));
-        Button btn = new Button("save Data to DB",e -> mongoService.firstSetUp());
+        Button btn = new Button("save Data to DB", e -> mongoService.firstSetUp());
         add(btn);
 
         Button btnPrivateSchedule = new Button("Schedule for Student");
@@ -62,22 +62,22 @@ public class MongoView extends VerticalLayout {
         usersGrid = new Grid<>(User.class);
         usersGrid.setItems(userService.getAllUsers());
         usersGrid.getStyle().setBorder("1px solid gray");
-        usersGrid.setColumns("username", "password","email", "phone","age");
+        usersGrid.setColumns("username", "password", "email", "phone", "age");
         usersGrid.addColumn(user -> String.join(", ", user.getCourseIds())).setHeader("Courses").setFlexGrow(3);
         add(usersGrid);
-        
+
         add(new H3("-- Course Grid --"));
         coursesGrid = new Grid<>(Course.class);
         coursesGrid.setItems(courseService.getAllCourses());
         coursesGrid.getStyle().setBorder("1px solid gray");
-        coursesGrid.setColumns("name", "courseID","duration","lecturer","mandatory");
+        coursesGrid.setColumns("name", "courseID", "duration", "lecturer", "mandatory");
         add(coursesGrid);
 
         add(new H3("-- Lecturer Grid --"));
         lecturersGrid = new Grid<>(Lecturer.class);
         lecturersGrid.setItems(lecturerService.getAllLectuurer());
         lecturersGrid.getStyle().setBorder("1px solid gray");
-        lecturersGrid.setColumns("name","ID","password","availableSlots");
+        lecturersGrid.setColumns("name", "ID", "password", "availableSlots");
         add(lecturersGrid);
 
         scheduleGrid = new Grid<>();

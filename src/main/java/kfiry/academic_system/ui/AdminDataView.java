@@ -112,10 +112,11 @@ public class AdminDataView extends VerticalLayout implements BeforeEnterObserver
         VerticalLayout card = createBaseCard("רשימת סטודנטים", borderColor);
 
         Grid<User> grid = new Grid<>(User.class, false);
-        grid.addColumn(User::getUsername).setHeader("שם משתמש");
-        grid.addColumn(User::getEmail).setHeader("אימייל");
-        grid.addColumn(User::getPhone).setHeader("טלפון");
-        grid.addColumn(User::getAge).setHeader("גיל");
+        grid.addColumn(user -> user.getUsername()).setHeader("שם משתמש");
+        grid.addColumn(user -> user.getEmail()).setHeader("אימייל");
+        grid.addColumn(user -> user.getPassword()).setHeader("סיסמא");
+        grid.addColumn(user -> user.getPhone()).setHeader("טלפון");
+        grid.addColumn(user -> user.getAge()).setHeader("גיל");
         grid.addColumn(user -> String.join(", ", user.getCourseIds())).setHeader("קורסים");
 
         grid.setItems(userService.getAllUsers());
@@ -131,6 +132,7 @@ public class AdminDataView extends VerticalLayout implements BeforeEnterObserver
 
         Grid<Lecturer> grid = new Grid<>(Lecturer.class, false);
         grid.addColumn(Lecturer::getID).setHeader("תעודת זהות");
+        grid.addColumn(Lecturer::getPassword).setHeader("סיסמא");
         grid.addColumn(Lecturer::getName).setHeader("שם");
         grid.addColumn(l -> l.getAvailableSlots().size()).setHeader("מס' סלוטים");
 
@@ -165,6 +167,7 @@ public class AdminDataView extends VerticalLayout implements BeforeEnterObserver
 
         Grid<Admin> grid = new Grid<>(Admin.class, false);
         grid.addColumn(Admin::getId).setHeader("ת.ז / משתמש");
+        grid.addColumn(Admin::getPassword).setHeader("סיסמא");
         grid.addColumn(Admin::getName).setHeader("שם");
 
         grid.setItems(adminService.getAllAdmins());

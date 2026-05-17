@@ -29,34 +29,6 @@ public class CoreService {
         this.scheduleRepo = scheduleRepo;
     }
 
-    public CourseGraph buildGraphForUser(String username) {
-        User user = mongoService.getUser(username);
-        if (user == null) {
-            throw new RuntimeException("User not found: " + username);
-        }
-        List<Course> userCourses = getCoursesForUser(user);
-        Set<String> userCourseIds = new HashSet<>(user.getCourseIds());
-        CourseGraph graph = new CourseGraph();
-        // הוספת קורסים לגרף
-        for (Course course : userCourses) {
-            graph.addCourse(course);
-        }
-        // הוספת קשרי prerequisite
-        for (Course course : userCourses) {
-            if (course.getPrerequisites() == null)
-                continue;
-            for (String prereqId : course.getPrerequisites()) {
-                if (userCourseIds.contains(prereqId)) {
-                    Course prereqCourse = findCourseById(userCourses, prereqId);
-                    if (prereqCourse != null) {
-                        graph.addPrerequisite(prereqCourse, course);
-                    }
-                }
-            }
-        }
-        return graph;
-    }
-
     public List<Course> getCoursesForUser(User user) {
         return mongoService.getCoursesByIds(user.getCourseIds());
     }
@@ -70,6 +42,12 @@ public class CoreService {
         return null;
     }
 
+    public ScheduleDocument getGlobalSchedule() {
+        return scheduleRepo.findTopByOrderByIdDesc().orElse(null);
+    }
+
+    // גרסא שלישית - גרסא שבה האדמין מריץ את השיבוץ הגלובלי עבור כל המשתמשים.
+    // והמשתמשים מסתמכים על המערכת של האדמין
     public Map<Course, TimeSlot> runGlobalAlgorithm(List<Course> allCourses) {
         CourseGraph graph = new CourseGraph();
         for (Course course : allCourses) {
@@ -95,6 +73,8 @@ public class CoreService {
         return scheduler.getAssignments();
     }
 
+    // גרסא שנייה של הרלגוריתם - גרסא זו עבדה אך אם היה 2 סטודנטים עם קורסים זהים הם
+    // היו משובצים בשעות שונות - ולכן נפסלה
     public Map<Course, TimeSlot> runAlgorithm(User u) {
         CourseGraph graph = buildGraphForUser(u.getUsername());
         List<Course> orderedCourses = topologicalSort(graph);
@@ -119,10 +99,8 @@ public class CoreService {
         return scheduler.getAssignments();
     }
 
-    public ScheduleDocument getGlobalSchedule() {
-        return scheduleRepo.findTopByOrderByIdDesc().orElse(null);
-    }
-
+    // גרסא ראשונה של האלגוריתם המרכזי - הגרסא הדפיסה את השעות כמחרוזת והייתה הוכחה
+    // לכך שהאלגוריתם עובד
     public List<String> runCoreAndReturnStrings(User u) {
         List<String> result = new ArrayList<>();
         // 1. בניית גרף למשתמש
@@ -153,6 +131,34 @@ public class CoreService {
             }
         }
         return result;
+    }
+
+    public CourseGraph buildGraphForUser(String username) {
+        User user = mongoService.getUser(username);
+        if (user == null) {
+            throw new RuntimeException("User not found: " + username);
+        }
+        List<Course> userCourses = getCoursesForUser(user);
+        Set<String> userCourseIds = new HashSet<>(user.getCourseIds());
+        CourseGraph graph = new CourseGraph();
+        // הוספת קורסים לגרף
+        for (Course course : userCourses) {
+            graph.addCourse(course);
+        }
+        // הוספת קשרי prerequisite
+        for (Course course : userCourses) {
+            if (course.getPrerequisites() == null)
+                continue;
+            for (String prereqId : course.getPrerequisites()) {
+                if (userCourseIds.contains(prereqId)) {
+                    Course prereqCourse = findCourseById(userCourses, prereqId);
+                    if (prereqCourse != null) {
+                        graph.addPrerequisite(prereqCourse, course);
+                    }
+                }
+            }
+        }
+        return graph;
     }
 
     public static List<Course> topologicalSort(CourseGraph graph) {

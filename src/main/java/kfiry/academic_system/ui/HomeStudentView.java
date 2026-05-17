@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Random;
 
 @Route(value = "/home", layout = AppLayoutStudent.class)
-public class HomeStudentView extends HorizontalLayout implements BeforeEnterObserver{
+public class HomeStudentView extends HorizontalLayout implements BeforeEnterObserver {
 
     private HomeStudentService homeServiceStudent;
     private List<Course> studentCourses;
@@ -304,60 +304,61 @@ public class HomeStudentView extends HorizontalLayout implements BeforeEnterObse
     }
 
     private void privateSchedule() {
-    User user = (User) VaadinSession.getCurrent().getAttribute("user");
-    if (user == null || studentCourses == null)
-        return;
+        User user = (User) VaadinSession.getCurrent().getAttribute("user");
+        if (user == null || studentCourses == null)
+            return;
 
-    // 1. שולפים את המערכת הכללית ממסד הנתונים (במקום להריץ את האלגוריתם מחדש)
-    ScheduleDocument globalSchedule = coreService.getGlobalSchedule();
-    
-    if (globalSchedule == null || globalSchedule.getCourseToSlot() == null) {
-        System.out.println("No global schedule found in DB!");
-        return;
-    }
+        // 1. שולפים את המערכת הכללית ממסד הנתונים (במקום להריץ את האלגוריתם מחדש)
+        ScheduleDocument globalSchedule = coreService.getGlobalSchedule();
 
-    Map<String, String> globalAssignments = globalSchedule.getCourseToSlot();
+        if (globalSchedule == null || globalSchedule.getCourseToSlot() == null) {
+            System.out.println("No global schedule found in DB!");
+            return;
+        }
 
-    // ניקוי הגריד לפני שמציירים מחדש (אופציונלי, מומלץ כדי למנוע כפילויות בלחיצות חוזרות)
-    // הערה: תצטרך לנקות רק את כרטיסיות הקורסים ולא את שורות הרקע/שעות, 
-    // או לבנות את גריד השעות מחדש אם אתה מנקה את הכל.
+        Map<String, String> globalAssignments = globalSchedule.getCourseToSlot();
 
-    // 2. עוברים על הקורסים של הסטודנט ומציירים אותם על הלוח לפי השעות הכלליות
-    for (Course course : studentCourses) {
-        String courseId = course.getCourseID();
-        
-        // בודקים מתי הקורס משובץ במערכת הכללית
-        if (globalAssignments.containsKey(courseId)) {
-            String timeString = globalAssignments.get(courseId); // לדוגמה: "MONDAY 8:00-9:00"
-            
-            // חילוץ היום והשעות מתוך המחרוזת שנשמרה ב-DB
-            try {
-                String[] parts = timeString.split(" ");
-                DayOfWeek day = DayOfWeek.valueOf(parts[0]);
-                
-                String[] hours = parts[1].split("-");
-                int startHour = Integer.parseInt(hours[0].split(":")[0]);
-                int endHour = Integer.parseInt(hours[1].split(":")[0]);
+        // ניקוי הגריד לפני שמציירים מחדש (אופציונלי, מומלץ כדי למנוע כפילויות בלחיצות
+        // חוזרות)
+        // הערה: תצטרך לנקות רק את כרטיסיות הקורסים ולא את שורות הרקע/שעות,
+        // או לבנות את גריד השעות מחדש אם אתה מנקה את הכל.
 
-                int column = convertDayToColumn(day);
-                int startRow = startHour - 6;
-                int rowSpan = endHour - startHour;
+        // 2. עוברים על הקורסים של הסטודנט ומציירים אותם על הלוח לפי השעות הכלליות
+        for (Course course : studentCourses) {
+            String courseId = course.getCourseID();
 
-                calendarGrid.add(
-                        createEventCard(
-                                course.getName(),
-                                timeString.split(" ")[1], // רק השעות (למשל "8:00-9:00")
-                                course.getLecturer() != null ? course.getLecturer().getName() : "Unknown",
-                                generateLightColor(),
-                                column,
-                                startRow,
-                                rowSpan));
-            } catch (Exception e) {
-                System.out.println("Error parsing time string for course: " + courseId + " -> " + timeString);
+            // בודקים מתי הקורס משובץ במערכת הכללית
+            if (globalAssignments.containsKey(courseId)) {
+                String timeString = globalAssignments.get(courseId); // לדוגמה: "MONDAY 8:00-9:00"
+
+                // חילוץ היום והשעות מתוך המחרוזת שנשמרה ב-DB
+                try {
+                    String[] parts = timeString.split(" ");
+                    DayOfWeek day = DayOfWeek.valueOf(parts[0]);
+
+                    String[] hours = parts[1].split("-");
+                    int startHour = Integer.parseInt(hours[0].split(":")[0]);
+                    int endHour = Integer.parseInt(hours[1].split(":")[0]);
+
+                    int column = convertDayToColumn(day);
+                    int startRow = startHour - 6;
+                    int rowSpan = endHour - startHour;
+
+                    calendarGrid.add(
+                            createEventCard(
+                                    course.getName(),
+                                    timeString.split(" ")[1], // רק השעות (למשל "8:00-9:00")
+                                    course.getLecturer() != null ? course.getLecturer().getName() : "Unknown",
+                                    generateLightColor(),
+                                    column,
+                                    startRow,
+                                    rowSpan));
+                } catch (Exception e) {
+                    System.out.println("Error parsing time string for course: " + courseId + " -> " + timeString);
+                }
             }
         }
     }
-}
 
     private int convertDayToColumn(DayOfWeek day) {
         return switch (day) {

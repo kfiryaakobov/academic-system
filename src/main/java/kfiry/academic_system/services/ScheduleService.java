@@ -19,17 +19,21 @@ public class ScheduleService {
     private CourseRepository courseRepository;
     private CoreService coreService;
 
-    public ScheduleService(ScheduleRepository scheduleRepository, CourseRepository courseRepository, CoreService coreService) {
+    public ScheduleService(ScheduleRepository scheduleRepository, CourseRepository courseRepository,
+            CoreService coreService) {
         this.scheduleRepository = scheduleRepository;
         this.courseRepository = courseRepository;
         this.coreService = coreService;
     }
 
+    // ברגע שהאתר עולה ומתחיל לפעול הפעולה הזו מתחילה לעבוד כבר מאחורי הקלעים
     @PostConstruct
     public void initializeSchedule() {
         generateGlobalSchedule();
     }
 
+    // שולפת את כל הקורסים, מריצה את אלגוריתם השיבוץ ומעדכנת את מערכת השעות הגלובלית
+    // ממסד הנתונים
     public void generateGlobalSchedule() {
         List<Course> allCourses = courseRepository.findAll();
         Map<Course, TimeSlot> assignments = coreService.runGlobalAlgorithm(allCourses);
@@ -37,15 +41,13 @@ public class ScheduleService {
         for (Map.Entry<Course, TimeSlot> entry : assignments.entrySet()) {
             Course course = entry.getKey();
             TimeSlot slot = entry.getValue();
-            String slotString =
-                    slot.getDay() + " " +
+            String slotString = slot.getDay() + " " +
                     slot.getStartHour() + ":00-" +
                     slot.getEndHour() + ":00";
 
             courseToSlot.put(
                     course.getCourseID(),
-                    slotString
-            );
+                    slotString);
         }
         scheduleRepository.deleteAll();
         ScheduleDocument schedule = new ScheduleDocument(courseToSlot);

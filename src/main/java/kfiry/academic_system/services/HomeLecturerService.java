@@ -1,7 +1,7 @@
 package kfiry.academic_system.services;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -18,13 +18,18 @@ public class HomeLecturerService {
     }
 
     public List<Course> getCoursesByLecturer(Lecturer lecturer) {
-        // שולף את כל הקורסים במערכת ומסנן רק את אלו שמשויכים למרצה המחובר
         List<Course> allCourses = courseRepo.findAll();
-        
-        return allCourses.stream()
-                .filter(course -> course.getLecturer() != null && 
-                                  course.getLecturer().getID().equals(lecturer.getID()))
-                .collect(Collectors.toList());
+        List<Course> lecturerCourses = new ArrayList<>();
+
+        for (Course course : allCourses) {
+            if (course.getLecturer() != null) {
+                boolean sameLecturer = course.getLecturer().getID().equals(lecturer.getID());
+                if (sameLecturer) {
+                    lecturerCourses.add(course);
+                }
+            }
+        }
+        return lecturerCourses;
     }
 
     public int calcDuration(List<Course> courses) {

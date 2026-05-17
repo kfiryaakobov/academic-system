@@ -11,29 +11,28 @@ import kfiry.academic_system.repositories.LecturerRepository;
 public class LecturerService {
     public LecturerRepository lecturerRepo;
 
-    public LecturerService(LecturerRepository lecturerRepo){
+    public LecturerService(LecturerRepository lecturerRepo) {
         this.lecturerRepo = lecturerRepo;
     }
 
     public void insertLectuurer(Lecturer lectuurer) throws Exception {
-        // בודקים לפי  (Id)
+        // בודקים לפי (Id)
         if (lecturerRepo.existsById(lectuurer.getID()))
             throw new Exception("lectuurer already exists!");
 
-        lecturerRepo.save(lectuurer); // save בטוח יותר מ-insert
+        lecturerRepo.save(lectuurer);
     }
 
     // R (Read/Retrive)
-   public ArrayList<Lecturer> getAllLectuurer()
-   {
-      return (ArrayList<Lecturer>)lecturerRepo.findAll();
-   }
+    public ArrayList<Lecturer> getAllLectuurer() {
+        return (ArrayList<Lecturer>) lecturerRepo.findAll();
+    }
 
-   public Lecturer authenticateLecturer(String ID, String password) throws Exception {
+    public Lecturer authenticateLecturer(String ID, String password) throws Exception {
         Lecturer lecturer = lecturerRepo.findByID(ID);
         if (lecturer == null || !lecturer.getPassword().equals(password)) {
             throw new Exception("שם משתמש או סיסמה שגויים");
         }
         return lecturer;
-    } 
+    }
 }

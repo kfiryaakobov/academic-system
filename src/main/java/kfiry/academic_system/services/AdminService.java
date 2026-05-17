@@ -13,12 +13,13 @@ public class AdminService {
     public AdminService(AdminRepository adminRepo) {
         this.adminRepo = adminRepo;
     }
+
     public void insertAdmin(Admin admin) throws Exception {
-        // בודקים לפי  (Id)
+        // בודקים לפי (Id)
         if (adminRepo.existsById(admin.getId()))
             throw new Exception("admin already exists!");
 
-        adminRepo.save(admin); // save בטוח יותר מ-insert
+        adminRepo.save(admin);
     }
 
     // R (Read/Retrive)
@@ -29,7 +30,7 @@ public class AdminService {
     public Admin authenticateAdmin(String id, String password) throws Exception {
         // שימוש בפונקציה המובנית של Spring ופתיחת ה-Optional
         Admin admin = adminRepo.findById(id).orElse(null);
-        
+
         if (admin == null || !admin.getPassword().equals(password)) {
             throw new Exception("פרטי מנהל שגויים");
         }

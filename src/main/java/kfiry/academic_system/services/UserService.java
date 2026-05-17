@@ -27,11 +27,11 @@ public class UserService {
     }
 
     public void insertUser(User user) throws Exception {
-        // בודקים לפי המייל 
+        // בודקים לפי המייל
         if (userRepo.existsById(user.getEmail()))
             throw new Exception("User already exists!");
 
-        userRepo.save(user); // save בטוח יותר מ-insert
+        userRepo.save(user);
     }
 
     // R (Read/Retrive)
@@ -71,7 +71,7 @@ public class UserService {
 
     // התחברות
     public User authenticate(String email, String password) throws Exception {
-        // שימוש ב-findById כי האימייל הוא ה-Primary Key (Id)
+        // שימוש ב-findById כי האימייל הוא ה- (Id)
         Optional<User> userOpt = userRepo.findById(email);
         if (userOpt.isEmpty() || !userOpt.get().getPassword().equals(password)) {
             throw new Exception("אימייל או סיסמה שגויים");

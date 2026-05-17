@@ -1,14 +1,15 @@
 package kfiry.academic_system.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import kfiry.academic_system.datamodels.Course;
+import kfiry.academic_system.datamodels.User;
 import kfiry.academic_system.repositories.CourseRepository;
 import kfiry.academic_system.repositories.UserRepository;
-import kfiry.academic_system.datamodels.User;
 
 @Service
 public class HomeStudentService {

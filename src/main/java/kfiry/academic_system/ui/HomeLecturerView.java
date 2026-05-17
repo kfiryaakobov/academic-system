@@ -111,7 +111,7 @@ public class HomeLecturerView extends VerticalLayout implements BeforeEnterObser
 
         // 2. אמצע: תפריט ניווט
         HorizontalLayout menu = new HorizontalLayout();
-        
+
         // יצירת כפתור התנתקות
         Button logoutButton = new Button("התנתקות");
         logoutButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY); // העיצוב הזה מעלים את הרקע והמסגרת של הכפתור

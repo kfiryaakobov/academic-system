@@ -7,5 +7,5 @@ import kfiry.academic_system.datamodels.Admin;
 
 @Repository
 public interface AdminRepository extends MongoRepository<Admin, String> {
-    
+
 }

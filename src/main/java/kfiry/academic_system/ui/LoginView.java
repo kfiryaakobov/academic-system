@@ -16,8 +16,6 @@ import com.vaadin.flow.server.VaadinSession;
 import kfiry.academic_system.datamodels.User;
 import kfiry.academic_system.services.UserService;
 
-//import kfiry.academic_system.datamodels.User;
-
 @Route("/")
 public class LoginView extends HorizontalLayout {
 
