@@ -16,6 +16,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.server.VaadinSession;
 
 import kfiry.academic_system.datamodels.User;
+import kfiry.academic_system.services.WeatherService; // ייבוא של הסרוויס שלך
 
 public class AppLayoutStudent extends AppLayout {
 
@@ -23,14 +24,16 @@ public class AppLayoutStudent extends AppLayout {
     private HorizontalLayout topNavbar;
     private Avatar userAvatar;
     private Span userInfo;
+    private WeatherService weatherService;
 
-    public AppLayoutStudent() {
+    public AppLayoutStudent(WeatherService weatherService) {
+        this.weatherService = weatherService;
         getElement().setAttribute("dir", "rtl");
-        buildNavbar();
+        buildNavbar(weatherService); // 2. העברנו אותו לפונקציית הבנייה
         addToNavbar(topNavbarPanel);
     }
 
-    private void buildNavbar() {
+    private void buildNavbar(WeatherService weatherService) {
         topNavbarPanel = new VerticalLayout();
         topNavbarPanel.setSpacing(false);
         topNavbarPanel.setPadding(false);
@@ -39,42 +42,53 @@ public class AppLayoutStudent extends AppLayout {
                 .set("border-bottom", "1px solid #eaeaea")
                 .set("background", "white");
 
-        // 1. ימין: לוגו וכותרת
+        // --- 1. יצירת תגית מזג האוויר ---
+        String weatherText = weatherService.getUserWeatherRecommendation();
+        Span weatherBadge = new Span(weatherText);
+        weatherBadge.getStyle()
+            .set("background-color", "#e0f7fa")
+            .set("color", "#006064")
+            .set("padding", "4px 12px")
+            .set("border-radius", "20px")
+            .set("font-size", "14px")
+            .set("font-weight", "600")
+            // מוסיף רווח מימין כדי שלא יידבק לטקסט של הכותרת
+            .set("margin-right", "15px"); 
+
+        // --- 2. ימין: לוגו, כותרת, ומזג האוויר ---
         HorizontalLayout logo = new HorizontalLayout();
         Icon cap = VaadinIcon.ACADEMY_CAP.create();
         cap.setColor("#1a56db");
         H2 title = new H2("איזור אישי סטודנטים");
         title.getStyle().set("margin", "0").set("font-size", "var(--lumo-font-size-l)");
-        logo.add(cap, title);
+        
+        // כאן הוספנו את ה-weatherBadge יחד עם הכובע והכותרת!
+        logo.add(cap, title, weatherBadge);
         logo.setAlignItems(Alignment.CENTER);
 
-        // 2. אמצע: תפריט ניווט
+        // --- 3. אמצע: תפריט ניווט (רק התנתקות עכשיו) ---
         HorizontalLayout menu = new HorizontalLayout();
         menu.setSpacing(true);
-        menu.setAlignItems(Alignment.CENTER); // יישור אנכי כדי שהלינק והכפתור יהיו באותו גובה
+        menu.setAlignItems(Alignment.CENTER);
 
-        // יצירת כפתור התנתקות
         Button logoutButton = new Button("התנתקות");
-        logoutButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY); // העיצוב הזה מעלים את הרקע והמסגרת של הכפתור
+        logoutButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         logoutButton.getStyle().set("font-size", "var(--lumo-font-size-m)");
 
         logoutButton.addClickListener(e -> {
-            // ניקוי מלא של התיק (הסשן) כולל כל המשתנים השמורים
             VaadinSession.getCurrent().getSession().invalidate();
             VaadinSession.getCurrent().close();
-
-            // ניווט חזרה למסך הלוגין
             UI.getCurrent().navigate(LoginView.class);
         });
 
+        // מזג האוויר הוסר מפה, נשאר רק כפתור ההתנתקות
         menu.add(logoutButton);
 
-        // 3. שמאל: פרטי משתמש ואוואטר
+        // --- 4. שמאל: פרטי משתמש ואוואטר ---
         User user = (User) VaadinSession.getCurrent().getAttribute("user");
         String displayName = "אורח";
 
         if (user != null) {
-            // שליפת השם מתוך אובייקט המשתמש
             displayName = user.getUsername();
         }
 
@@ -91,14 +105,10 @@ public class AppLayoutStudent extends AppLayout {
         topNavbar = new HorizontalLayout();
         topNavbar.setWidthFull();
         topNavbar.setAlignItems(Alignment.CENTER);
-
-        // זה מה שדוחף את החלקים לצדדים (ימין, אמצע, שמאל)
         topNavbar.setJustifyContentMode(JustifyContentMode.BETWEEN);
 
-        // הוספה לפי הסדר (מימין לשמאל בגלל ה-RTL)
         topNavbar.add(logo, menu, userSection);
 
-        // מוסיפים רק את ה-topNavbar לפאנל הראשי (בלי ה-userInfo הנפרד ובלי ה-Hr)
         topNavbarPanel.add(topNavbar);
     }
 }
