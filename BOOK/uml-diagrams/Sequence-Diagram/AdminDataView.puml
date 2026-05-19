@@ -1,0 +1,34 @@
+@startuml
+skinparam handwritten false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+
+actor "מנהל מערכת" as Admin
+participant "client" as client
+participant "server" as server
+database "(MongoDB)" as DB
+
+== טעינת עמוד ניהול קורסים ומשאבים ==
+Admin -> client: כניסה לעמוד ניהול קורסים ומשאבים
+client -> server: בקשת רשימת קורסים, כיתות ומשאבים קיימים
+server -> DB: שליפת הנתונים הקיימים
+DB --> server: החזרת הנתונים
+server --> client: שליחת נתונים לתצוגה
+client --> Admin: הצגת טבלת הקורסים והמשאבים במערכת
+
+== הוספה  של קורס או משאב ==
+Admin -> client: הזנת פרטי קורס/משאב (למשל: שם קורס, דרישות כיתה)
+client -> server: שליחת נתוני המשאב החדש/המעודכן
+server -> server: אימות נתונים (למשל: בדיקה אם קוד הקורס כבר קיים)
+
+alt נתונים תקינים (ואין כפילויות)
+    server -> DB: שמירת/עדכון נתוני הקורס או המשאב
+    DB --> server: אישור שמירה בהצלחה
+    server --> client: אישור ביצוע הפעולה
+    client --> Admin: הצגת הודעת הצלחה ורענון הרשימה
+else שגיאת אימות או מזהה כפול
+    server --> client: שגיאה - קורס כבר קיים או נתונים חסרים
+    client --> Admin: הצגת הודעת שגיאה
+end
+
+@enduml

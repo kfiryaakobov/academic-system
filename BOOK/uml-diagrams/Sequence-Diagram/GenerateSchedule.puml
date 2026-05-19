@@ -1,0 +1,28 @@
+@startuml GenerateSchedule
+skinparam handwritten false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+
+actor "מנהל מערכת" as Admin
+participant "client" as client
+participant "server" as server
+database "(MongoDB)" as DB
+
+== תהליך הפקת שיבוץ ==
+Admin -> client: לחיצה על הפקת שיבוץ
+client -> server: בקשה להפעלת מנגנון השיבוץ
+server -> DB: שליפת אילוצי מרצים, קורסים ומשאבים
+DB --> server: החזרת הנתונים לחישוב
+
+server -> server: הרצת אלגוריתם שיבוץ
+
+alt שיבוץ עבר בהצלחה (נמצא פתרון)
+    server -> DB: שמירת מערכת השעות המלאה
+    DB --> server: אישור שמירה
+    server --> client: עדכון על סיום והצלחת השיבוץ
+    client --> Admin: הצגת המערכת החדשה למנהל
+else קיימות התנגשויות (אין פתרון)
+    server --> client: החזרת שגיאת חפיפות/אילוצים
+    client --> Admin: הצגת הודעת שגיאה על כישלון השיבוץ
+end
+@enduml

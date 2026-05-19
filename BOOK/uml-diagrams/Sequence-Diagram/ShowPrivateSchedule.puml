@@ -1,0 +1,25 @@
+@startuml ViewSchedule
+skinparam handwritten false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+
+actor "סטודנט/מרצה" as User
+participant "client" as client
+participant "server" as server
+database "(MongoDB)" as DB
+
+== תהליך צפייה במערכת אישית ==
+User -> client: לחיצה על צפייה במערכת שעות
+client -> server: בקשת נתוני מערכת לפי מזהה משתמש
+server -> DB: שליפת קורסים וזמנים משובצים
+
+alt קיימים שיבוצים למשתמש
+    DB --> server: החזרת רשימת הקורסים והשעות
+    server --> client: העברת נתוני המערכת
+    client --> User: הצגת המערכת האישית (טבלה/יומן)
+else לא קיימים שיבוצים
+    DB --> server: החזרת רשימה ריקה
+    server --> client: עדכון כי לא נמצאו נתונים
+    client --> User: הצגת הודעה שטרם שובצו קורסים
+end
+@enduml

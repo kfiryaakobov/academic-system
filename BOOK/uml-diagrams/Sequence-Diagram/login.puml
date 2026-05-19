@@ -1,0 +1,41 @@
+@startuml
+skinparam handwritten false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+
+actor "משתמש" as User
+participant "client" as client
+participant "server" as server
+database "(MongoDB)" as DB
+
+== תהליך התחברות (Login) ==
+User -> client: הזנת שם משתמש וסיסמה
+client -> server: בקשת התחברות (Credentials)
+server -> DB: חיפוש משתמש לפי מייל
+DB --> server: החזרת פרטי המשתמש
+
+alt פרטים נכונים
+    server -> server: אישור התחברות (יצירת Session)
+    server --> client: העברה למסך הראשי
+    client --> User: הצגת מסך ראשי
+else פרטים שגויים או משתמש לא קיים
+    server --> client: דחיית התחברות
+    client --> User: הצגת הודעת שגיאה
+end
+
+== תהליך רישום (Registration) ==
+User -> client: הזנת פרטי רישום
+client -> server: בקשת רישום משתמש חדש
+server -> DB: בדיקה האם המשתמש כבר קיים
+DB --> server: תוצאת הבדיקה
+
+alt משתמש לא קיים
+    server -> DB: שמירת נתוני המשתמש החדש
+    DB --> server: אישור שמירה
+    server --> client: אישור רישום
+    client --> User: הודעת הצלחה והפניה להתחברות
+else משתמש כבר קיים
+    server --> client: שגיאה - המשתמש קיים
+    client --> User: הצגת הודעת שגיאה
+end
+@enduml

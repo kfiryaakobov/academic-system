@@ -1,0 +1,33 @@
+@startuml
+skinparam handwritten false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+
+actor "מנהל מערכת" as Admin
+participant "client" as client
+participant "server" as server
+database "(MongoDB)" as DB
+
+== טעינת דף ניהול האילוצים ==
+Admin -> client: כניסה לדף ניהול אילוצי מרצים
+client -> server: בקשת רשימת מרצים ואילוצים קיימים
+server -> DB: שליפת נתוני מרצים
+DB --> server: החזרת רשימת מרצים
+server --> client: העברת נתונים לתצוגה
+client --> Admin: הצגת דף הכנסת נתונים (טבלת שעות/ימים)
+
+== הזנת ושמירת אילוצי מרצה ==
+Admin -> client: בחירת מרצה והזנת אילוצים (מתי מלמד ומתי לא)
+client -> server: שליחת נתוני האילוצים של המרצה
+server -> server: אימות נתונים (Validation)
+
+alt נתונים תקינים
+    server -> DB: עדכון/שמירת אילוצי המרצה
+    DB --> server: אישור שמירה בהצלחה
+    server --> client: אישור קבלת הנתונים
+    client --> Admin: הצגת הודעת הצלחה ("האילוצים עודכנו")
+else שגיאת אימות (למשל פורמט זמנים שגוי)
+    server --> client: שגיאה - נתונים לא תקינים
+    client --> Admin: הצגת הודעת שגיאה (בקשה לתיקון הזמנים)
+end
+@enduml

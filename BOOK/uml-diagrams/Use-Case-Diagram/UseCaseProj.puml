@@ -1,0 +1,36 @@
+@startuml Tar3
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+
+' הגדרת השחקנים (Actors)
+actor "סטודנט" as Student
+actor "מרצה" as Lecturer
+actor "מנהל מערכת" as Admin
+
+rectangle "מערכת שיבוץ קורסים" {
+
+    ' הגדרת מקרי השימוש (Use Cases)
+    usecase "התחברות ורישום למערכת\n(Login)" as Login
+    usecase "ניהול אילוצי מרצים עפי המנהל\n(Submit Constraints)" as SubmitConstraints
+    usecase "צפייה במערכת אישית\n(View Schedule)" as ViewSchedule
+    usecase "ניהול קורסים ומשאבים\n(Manage Resources)" as ManageResources
+    usecase "הפקת שיבוץ\n(Generate Schedule)" as GenerateSchedule
+
+    ' חיבורים - מי עושה מה
+
+    ' כולם צריכים להתחבר
+    Student --> Login
+    Lecturer --> Login
+    Admin --> Login
+    
+    Student --> ViewSchedule
+    Lecturer --> ViewSchedule
+
+    ' פעולות של מנהל בלבד
+    Admin --> ManageResources
+    Admin --> SubmitConstraints
+    Admin --> GenerateSchedule
+}
+
+@enduml
