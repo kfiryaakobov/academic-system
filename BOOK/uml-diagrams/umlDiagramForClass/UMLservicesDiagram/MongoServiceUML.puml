@@ -1,0 +1,12 @@
+@startuml
+class MongoService {
+    - AdminRepository adminRepository
+    - CourseRepository courseRepository
+    - LecturerRepository lecturerRepository
+    - UserRepository userRepository
+    + firstSetUp() void
+    + getAllCourses() List<Course>
+    + getUser(String username) User
+    + getCoursesByIds(List<String> ids) List<Course>
+}
+@enduml

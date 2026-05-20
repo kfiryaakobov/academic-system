@@ -1,0 +1,8 @@
+@startuml
+class AdminService {
+    - AdminRepository adminRepo
+    + insertAdmin(Admin admin) void
+    + getAllAdmins() ArrayList<Admin>
+    + authenticateAdmin(String id, String password) Admin
+}
+@enduml

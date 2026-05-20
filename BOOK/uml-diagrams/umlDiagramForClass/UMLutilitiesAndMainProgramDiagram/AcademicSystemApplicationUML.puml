@@ -1,0 +1,5 @@
+@startuml
+class AcademicSystemApplication {
+    + main(String[] args) static
+}
+@enduml

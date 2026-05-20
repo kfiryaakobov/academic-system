@@ -1,0 +1,10 @@
+@startuml
+class ScheduleService {
+    - ScheduleRepository scheduleRepository
+    - CourseRepository courseRepository
+    - CoreService coreService
+    + initializeSchedule() void
+    + generateGlobalSchedule() void
+    + getSchedule() ScheduleDocument
+}
+@enduml

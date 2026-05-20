@@ -1,0 +1,7 @@
+@startuml
+class CourseService {
+    - CourseRepository courseRepo
+    + insertCourse(Course course) void
+    + getAllCourses() ArrayList<Course>
+}
+@enduml

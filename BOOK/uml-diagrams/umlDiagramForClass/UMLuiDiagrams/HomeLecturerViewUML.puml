@@ -1,0 +1,11 @@
+@startuml
+class HomeLecturerView {
+    - HomeLecturerService homeServiceLecturer
+    - List<Course> lecturerCourses
+    - CoreService coreService
+    - Div calendarGrid
+    + beforeEnter(BeforeEnterEvent event) void
+    - privateSchedule() void
+    - createEventCard(String title, String time, String room, String color, int col, int startRow, int rowSpan) Div
+}
+@enduml

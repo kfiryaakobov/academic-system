@@ -1,0 +1,9 @@
+@startuml
+class AppLayoutAdmin {
+    - VerticalLayout topNavbarPanel
+    - HorizontalLayout topNavbar
+    - Avatar userAvatar
+    - Span userInfo
+    - buildNavbar() void
+}
+@enduml

@@ -1,0 +1,13 @@
+@startuml
+class Admin {
+    - String id
+    - String password
+    - String name
+    + getId() String
+    + setId(String id) void
+    + getPassword() String
+    + setPassword(String password) void
+    + getName() String
+    + setName(String name) void
+}
+@enduml

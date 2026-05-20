@@ -1,0 +1,10 @@
+@startuml
+class AppLayoutStudent {
+    - VerticalLayout topNavbarPanel
+    - HorizontalLayout topNavbar
+    - Avatar userAvatar
+    - Span userInfo
+    - WeatherService weatherService
+    - buildNavbar(WeatherService weatherService) void
+}
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+class Course {
+    - String name
+    - String courseID
+    - int duration
+    - Lecturer lecturer
+    - boolean mandatory
+    - ArrayList<String> prerequisites
+    + addPrerequisite(String courseId) void
+    + getPrerequisites() ArrayList<String>
+}
+@enduml

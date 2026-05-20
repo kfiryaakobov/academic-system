@@ -1,0 +1,9 @@
+@startuml
+class WeatherService {
+    - String API_KEY
+    - String COLLEGE_CITY
+    - RestTemplate restTemplate
+    - getTemperature() double
+    + getUserWeatherRecommendation() String
+}
+@enduml

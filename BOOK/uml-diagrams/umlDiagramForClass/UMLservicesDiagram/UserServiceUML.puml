@@ -1,0 +1,12 @@
+@startuml
+class UserService {
+    - UserRepository userRepo
+    - CourseRepository courseRepo
+    + insertUser(User user) void
+    + getAllUsers() ArrayList<User>
+    + getStudentCourses(User user) List<Course>
+    + registerNewUser(User user) boolean
+    + addCoursesForUser(String email, Set<Course> courses) User
+    + authenticate(String email, String password) User
+}
+@enduml

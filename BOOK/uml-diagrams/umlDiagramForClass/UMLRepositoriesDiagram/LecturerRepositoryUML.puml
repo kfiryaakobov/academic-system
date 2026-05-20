@@ -1,0 +1,5 @@
+@startuml
+interface LecturerRepository <<MongoRepository>> {
+    + findByID(String ID) Lecturer
+}
+@enduml

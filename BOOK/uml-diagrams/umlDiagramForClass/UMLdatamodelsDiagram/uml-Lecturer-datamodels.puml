@@ -1,0 +1,10 @@
+@startuml
+class Lecturer {
+    - String name
+    - String ID
+    - String password
+    - Set<TimeSlot> availableSlots
+    + addAvailableSlot(TimeSlot timeSlot) void
+    + isAvailable(TimeSlot time) boolean
+}
+@enduml

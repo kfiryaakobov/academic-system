@@ -1,0 +1,13 @@
+@startuml
+class AdminAddDataView {
+    - UserService userService
+    - CourseService courseService
+    - LecturerService lecturerService
+    - AdminService adminService
+    + beforeEnter(BeforeEnterEvent event) void
+    - createStudentCard(String borderColor) VerticalLayout
+    - createLecturerCard(String borderColor) VerticalLayout
+    - createCourseCard(String borderColor) VerticalLayout
+    - createAdminCard(String borderColor) VerticalLayout
+}
+@enduml

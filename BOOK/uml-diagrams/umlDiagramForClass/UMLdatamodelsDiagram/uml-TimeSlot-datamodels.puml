@@ -1,0 +1,11 @@
+@startuml
+class TimeSlot {
+    - DayOfWeek day
+    - int startHour
+    - int endHour
+    + overlaps(TimeSlot other) boolean
+    + contains(int hour) boolean
+    + equals(Object o) boolean
+    + hashCode() int
+}
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class LecturerService {
+    - LecturerRepository lecturerRepo
+    + insertLectuurer(Lecturer lectuurer) void
+    + getAllLectuurer() ArrayList<Lecturer>
+    + authenticateLecturer(String ID, String password) Lecturer
+}
+@enduml

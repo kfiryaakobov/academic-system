@@ -1,0 +1,12 @@
+@startuml
+class User {
+    - String email
+    - String username
+    - String password
+    - String phone
+    - int age
+    - ArrayList<String> courseIds
+    + enrollCourse(String courseId) void
+    + removeCourse(String courseId) void
+}
+@enduml

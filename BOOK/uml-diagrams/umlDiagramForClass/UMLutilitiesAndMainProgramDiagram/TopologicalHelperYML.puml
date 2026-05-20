@@ -1,0 +1,5 @@
+@startuml
+class TopologicalHelper {
+    + DFS(CourseGraph graph, Stack<Course> stack, Course current, Set<Course> visited) void
+}
+@enduml

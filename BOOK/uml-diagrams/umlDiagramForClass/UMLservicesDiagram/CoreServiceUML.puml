@@ -1,0 +1,10 @@
+@startuml
+class CoreService {
+    - MongoService mongoService
+    - ScheduleRepository scheduleRepo
+    + runGlobalAlgorithm(List<Course> allCourses) Map<Course, TimeSlot>
+    + buildGraphForUser(String username) CourseGraph
+    + topologicalSort(CourseGraph graph) List<Course>
+    + SchedulingBacktrackingAndPruning(SchedulerHelper scheduler, int index) boolean
+}
+@enduml

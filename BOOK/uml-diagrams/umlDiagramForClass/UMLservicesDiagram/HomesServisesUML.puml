@@ -1,0 +1,17 @@
+@startuml
+class HomeAdminService {
+    + getAllCourses() List<Course>
+    + getCourseById(String id) Course
+    + getTotalCourseCount() int
+}
+
+class HomeLecturerService {
+    + getCoursesByLecturer(Lecturer lecturer) List<Course>
+    + calcDuration(List<Course> courses) int
+}
+
+class HomeStudentService {
+    + getCoursesByStudent(String email) List<Course>
+    + calcDuration(List<Course> courses) int
+}
+@enduml

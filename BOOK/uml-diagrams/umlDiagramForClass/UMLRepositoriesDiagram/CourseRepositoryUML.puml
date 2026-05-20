@@ -1,0 +1,6 @@
+@startuml
+interface CourseRepository <<MongoRepository>> {
+    + findByCourseIDIn(List<String> ids) List<Course>
+    + findAllByCourseIDIn(List<String> ids) List<Course>
+}
+@enduml

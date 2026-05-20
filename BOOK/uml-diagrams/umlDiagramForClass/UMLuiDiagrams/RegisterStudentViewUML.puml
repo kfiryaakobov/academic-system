@@ -1,0 +1,13 @@
+@startuml
+class RegisterStudentView {
+    - TextField username
+    - PasswordField password
+    - EmailField email
+    - TextField phone
+    - IntegerField age
+    - RadioButtonGroup<String> gender
+    - UserService userService
+    - applyFieldStyle(HasStyle field) void
+    - validateAndSubmit() void
+}
+@enduml

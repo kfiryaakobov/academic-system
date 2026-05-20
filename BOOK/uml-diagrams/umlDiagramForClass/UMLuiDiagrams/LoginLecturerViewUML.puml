@@ -1,0 +1,10 @@
+@startuml
+class LoginLecturerView {
+    - TextField id
+    - PasswordField password
+    - LecturerService lecturerService
+    - Checkbox adminCheckbox
+    - AdminService adminService
+    - moveToHomePage() void
+}
+@enduml

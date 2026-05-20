@@ -1,0 +1,16 @@
+@startuml
+class ChooseCourseForStudentView {
+    - MongoService mongoService
+    - UserService userService
+    - List<Course> allCourses
+    - VerticalLayout selectedCoursesList
+    - Span creditsLabel
+    - Map<Integer, CheckboxGroup<Course>> semesterGroups
+    - Button finishChooseBtn
+    - Set<Course> selectedCourses
+    - createSemesterColumn(HorizontalLayout parent, String title, List<Course> courses, int semesterIdx) CheckboxGroup
+    - createSummaryColumn() VerticalLayout
+    - moveToHome() void
+    - refreshTotalSummary() void
+}
+@enduml

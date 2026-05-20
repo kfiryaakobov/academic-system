@@ -1,0 +1,12 @@
+@startuml
+class SchedulerHelper {
+    - Map<Course, TimeSlot> assignments
+    - List<Course> topologicCourses
+    + setTopologicCourses(List<Course> topologicCourses) void
+    + canAssign(Course course, TimeSlot timeSlot) boolean
+    + assign(Course course, TimeSlot timeSlot) void
+    + unassign(Course course) void
+    + getPossibleTimeSlots(Course course) List<TimeSlot>
+    + isComplete() boolean
+}
+@enduml

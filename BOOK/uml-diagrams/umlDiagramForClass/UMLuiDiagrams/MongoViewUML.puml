@@ -1,0 +1,14 @@
+@startuml
+class MongoView {
+    - UserService userService
+    - CoreService coreService
+    - CourseService courseService
+    - LecturerService lecturerService
+    - Grid<User> usersGrid
+    - Grid<Course> coursesGrid
+    - Grid<Lecturer> lecturersGrid
+    - Grid<String> scheduleGrid
+    - privateSchedule() void
+    - insertUserToDB() void
+}
+@enduml

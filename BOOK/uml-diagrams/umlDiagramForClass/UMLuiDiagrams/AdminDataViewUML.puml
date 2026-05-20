@@ -1,0 +1,12 @@
+@startuml
+class AdminDataView {
+    - UserService userService
+    - CourseService courseService
+    - LecturerService lecturerService
+    - AdminService adminService
+    - ScheduleService scheduleService
+    - VerticalLayout gridContainer
+    + beforeEnter(BeforeEnterEvent event) void
+    - showGrid(String selection) void
+}
+@enduml

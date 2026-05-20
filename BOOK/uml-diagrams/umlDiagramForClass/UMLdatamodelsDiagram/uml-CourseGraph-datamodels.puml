@@ -1,0 +1,9 @@
+@startuml
+class CourseGraph {
+    - Map<Course, List<Course>> adjList
+    + addCourse(Course course) void
+    + addPrerequisite(Course before, Course after) void
+    + getGraph() Map<Course, List<Course>>
+    + printGraph() void
+}
+@enduml

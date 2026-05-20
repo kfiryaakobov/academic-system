@@ -1,0 +1,8 @@
+@startuml
+class ScheduleDocument {
+    - String id
+    - Map<String, String> courseToSlot
+    + getCourseToSlot() Map<String, String>
+    + setCourseToSlot(Map<String, String> courseToSlot) void
+}
+@enduml

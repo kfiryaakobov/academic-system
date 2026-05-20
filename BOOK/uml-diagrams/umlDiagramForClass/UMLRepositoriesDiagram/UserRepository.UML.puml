@@ -1,0 +1,6 @@
+@startuml
+interface UserRepository <<MongoRepository>> {
+    + findByUsername(String username) User
+    + findByEmail(String mail) Optional<User>
+}
+@enduml
