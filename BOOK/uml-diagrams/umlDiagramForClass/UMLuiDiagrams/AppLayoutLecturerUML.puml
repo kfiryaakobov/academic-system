@@ -1,0 +1,14 @@
+@startuml
+class AppLayoutLecturer {
+    - HorizontalLayout topNavbar
+    - HorizontalLayout logo
+    - Icon cap
+    - H2 title
+    - HorizontalLayout menu
+    - Button logoutButton
+    - HorizontalLayout userSection
+    - Avatar userAvatar
+    - Span userInfo
+    - AppLayoutLecturer()
+}
+@enduml

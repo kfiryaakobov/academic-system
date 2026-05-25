@@ -1,0 +1,12 @@
+@startuml
+class AppLayoutWelcome {
+    - HorizontalLayout navBar
+    - HorizontalLayout logoLayout
+    - Icon capIcon
+    - Span logoText
+    - HorizontalLayout buttons
+    - Button loginBtn
+    - Button registerBtn
+    + AppLayoutWelcome()
+}
+@enduml

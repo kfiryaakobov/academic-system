@@ -1,0 +1,48 @@
+@startuml
+left to right direction
+skinparam classAttributeIconSize 0
+skinparam ranksep 250
+skinparam nodesep 40
+hide members
+
+package "ממשקי מנהל וכללי (Admin & General)" {
+    class AdminAddDataView
+    class AdminDataView
+    class HomeAdminView
+    class LoginView
+    class MongoView
+}
+
+package "שירותים (Services)" {
+    class AdminService
+    class CoreService
+    class CourseService
+    class HomeAdminService
+    class LecturerService
+    class ScheduleService
+    class UserService
+}
+
+' --- הזרקת שירותים ---
+AdminAddDataView --> UserService
+AdminAddDataView --> CourseService
+AdminAddDataView --> LecturerService
+AdminAddDataView --> AdminService
+
+AdminDataView --> UserService
+AdminDataView --> CourseService
+AdminDataView --> LecturerService
+AdminDataView --> AdminService
+AdminDataView --> ScheduleService
+
+HomeAdminView --> CoreService
+HomeAdminView --> HomeAdminService
+HomeAdminView --> ScheduleService
+
+LoginView --> UserService
+
+MongoView --> UserService
+MongoView --> CoreService
+MongoView --> CourseService
+MongoView --> LecturerService
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class InformationView {
+    + InformationView()
+    - configureBackground() void
+    - createNavBar() HorizontalLayout
+    - createMainContent() VerticalLayout
+}
+@enduml

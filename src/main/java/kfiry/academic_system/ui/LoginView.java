@@ -16,7 +16,7 @@ import com.vaadin.flow.server.VaadinSession;
 import kfiry.academic_system.datamodels.User;
 import kfiry.academic_system.services.UserService;
 
-@Route("/")
+@Route("/login")
 public class LoginView extends HorizontalLayout {
 
     private TextField email;

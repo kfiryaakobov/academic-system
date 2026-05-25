@@ -1,0 +1,43 @@
+@startuml
+top to bottom direction
+skinparam classAttributeIconSize 0
+skinparam ranksep 80
+skinparam nodesep 60
+skinparam linetype ortho
+hide members
+
+package "ניהול נתונים (Repositories)" {
+    interface AdminRepository
+    interface CourseRepository
+    interface LecturerRepository
+    interface ScheduleRepository
+    interface UserRepository
+}
+
+package "תשתית נתונים (Spring Data)" {
+    interface MongoRepository
+}
+
+package "מודלים (Data Models)" {
+    class Admin
+    class Course
+    class Lecturer
+    class ScheduleDocument
+    class User
+}
+
+' --- ירושה מהתשתית ---
+AdminRepository -up-|> MongoRepository
+CourseRepository -up-|> MongoRepository
+LecturerRepository -up-|> MongoRepository
+ScheduleRepository -up-|> MongoRepository
+UserRepository -up-|> MongoRepository
+
+' --- קשרי הכלה/ניהול מול המודלים ---
+AdminRepository --> Admin 
+CourseRepository --> Course 
+LecturerRepository --> Lecturer 
+ScheduleRepository --> ScheduleDocument 
+UserRepository --> User 
+
+@enduml

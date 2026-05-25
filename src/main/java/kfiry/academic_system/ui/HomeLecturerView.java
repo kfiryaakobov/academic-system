@@ -1,16 +1,11 @@
 package kfiry.academic_system.ui;
 
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -35,7 +30,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
-@Route(value = "/homeLecturer")
+@Route(value = "/homeLecturer",  layout = AppLayoutLecturer.class)
 public class HomeLecturerView extends VerticalLayout implements BeforeEnterObserver { // שינוי ל-Vertical והוספת הגנה
 
     private HomeLecturerService homeServiceLecturer;
@@ -54,10 +49,8 @@ public class HomeLecturerView extends VerticalLayout implements BeforeEnterObser
         setSpacing(false);
         getStyle().set("background-color", "#f8fafd");
 
-        // 1. יצירת התפריט העליון (כמו בסטודנט)
-        HorizontalLayout topNavbar = createTopNavbar();
 
-        // 2. יצירת תוכן המסך (3 העמודות)
+        // 1. יצירת תוכן המסך (3 העמודות)
         HorizontalLayout mainContent = new HorizontalLayout();
         mainContent.setSizeFull();
         mainContent.setPadding(true); // החזרנו ריווח פנימי לתוכן
@@ -72,8 +65,7 @@ public class HomeLecturerView extends VerticalLayout implements BeforeEnterObser
         mainContent.setFlexGrow(0.5, centerArea);
         mainContent.setFlexGrow(0.25, rightSidebar);
 
-        // הוספת הבר העליון והתוכן המרכזי למסך הראשי
-        add(topNavbar, mainContent);
+        add(mainContent);
     }
 
     // ==========================================
@@ -85,62 +77,6 @@ public class HomeLecturerView extends VerticalLayout implements BeforeEnterObser
         if (lecturer == null) {
             event.forwardTo(LoginLecturerView.class);
         }
-    }
-
-    // ==========================================
-    // יצירת הבר העליון
-    // ==========================================
-    private HorizontalLayout createTopNavbar() {
-        HorizontalLayout topNavbar = new HorizontalLayout();
-        topNavbar.setWidthFull();
-        topNavbar.setAlignItems(FlexComponent.Alignment.CENTER);
-        topNavbar.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN); // מפזר לימין אמצע ושמאל
-        topNavbar.getStyle()
-                .set("padding", "10px 20px")
-                .set("border-bottom", "1px solid #eaeaea")
-                .set("background", "white");
-
-        // 1. ימין: לוגו
-        HorizontalLayout logo = new HorizontalLayout();
-        Icon cap = VaadinIcon.ACADEMY_CAP.create();
-        cap.setColor("#1a56db");
-        H2 title = new H2("איזור אישי סגל");
-        title.getStyle().set("margin", "0").set("font-size", "var(--lumo-font-size-l)");
-        logo.add(cap, title);
-        logo.setAlignItems(FlexComponent.Alignment.CENTER);
-
-        // 2. אמצע: תפריט ניווט
-        HorizontalLayout menu = new HorizontalLayout();
-
-        // יצירת כפתור התנתקות
-        Button logoutButton = new Button("התנתקות");
-        logoutButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY); // העיצוב הזה מעלים את הרקע והמסגרת של הכפתור
-        logoutButton.getStyle().set("font-size", "var(--lumo-font-size-m)");
-
-        logoutButton.addClickListener(e -> {
-            // ניקוי מלא של התיק (הסשן) כולל כל המשתנים השמורים
-            VaadinSession.getCurrent().getSession().invalidate();
-            VaadinSession.getCurrent().close();
-
-            // ניווט חזרה למסך הלוגין
-            UI.getCurrent().navigate(LoginView.class);
-        });
-
-        menu.add(logoutButton);
-
-        // 3. שמאל: פרטי המרצה
-        Lecturer lecturer = (Lecturer) VaadinSession.getCurrent().getAttribute("lecturer");
-        String username = lecturer != null ? lecturer.getName() : "אורח";
-
-        Avatar userAvatar = new Avatar(username);
-        Span userInfo = new Span("שלום, " + username);
-        userInfo.getStyle().set("font-weight", "600");
-
-        HorizontalLayout userSection = new HorizontalLayout(userInfo, userAvatar);
-        userSection.setAlignItems(FlexComponent.Alignment.CENTER);
-
-        topNavbar.add(logo, menu, userSection);
-        return topNavbar;
     }
 
     private VerticalLayout createLeftSidebar() {

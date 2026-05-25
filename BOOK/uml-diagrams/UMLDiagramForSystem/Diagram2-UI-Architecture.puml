@@ -1,0 +1,55 @@
+@startuml
+left to right direction
+skinparam classAttributeIconSize 0
+skinparam ranksep 350
+skinparam nodesep 40
+hide members
+
+package "ממשקי משתמש (UI Views)" {
+    class AdminAddDataView
+    class AdminDataView
+    class AppLayoutAdmin
+    class AppLayoutStudent
+    class ChooseCourseForStudentView
+    class HomeAdminView
+    class HomeLecturerView
+    class HomeStudentView
+    class InformationView
+    class LoginLecturerView
+    class LoginView
+    class MongoView
+    class RegisterStudentView
+}
+
+package "תשתית (Vaadin Framework)" {
+    class AppLayout
+    class HorizontalLayout
+    class VerticalLayout
+    interface BeforeEnterObserver
+}
+
+' --- ירושה מהתשתיות ---
+AppLayoutAdmin --|> AppLayout
+AppLayoutStudent --|> AppLayout
+
+AdminAddDataView --|> VerticalLayout
+AdminDataView --|> VerticalLayout
+ChooseCourseForStudentView --|> VerticalLayout
+HomeLecturerView --|> VerticalLayout
+InformationView --|> VerticalLayout
+MongoView --|> VerticalLayout
+RegisterStudentView --|> VerticalLayout
+
+HomeAdminView --|> HorizontalLayout
+HomeStudentView --|> HorizontalLayout
+LoginLecturerView --|> HorizontalLayout
+LoginView --|> HorizontalLayout
+
+' --- מימוש ממשקי מחזור חיים ---
+AdminAddDataView ..|> BeforeEnterObserver
+AdminDataView ..|> BeforeEnterObserver
+ChooseCourseForStudentView ..|> BeforeEnterObserver
+HomeAdminView ..|> BeforeEnterObserver
+HomeLecturerView ..|> BeforeEnterObserver
+HomeStudentView ..|> BeforeEnterObserver
+@enduml

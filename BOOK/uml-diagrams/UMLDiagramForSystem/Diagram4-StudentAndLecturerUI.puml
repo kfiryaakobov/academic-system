@@ -1,0 +1,44 @@
+@startuml
+left to right direction
+skinparam classAttributeIconSize 0
+skinparam ranksep 250
+skinparam nodesep 40
+hide members
+
+package "ממשקי סטודנט ומרצה (Student & Lecturer)" {
+    class AppLayoutStudent
+    class ChooseCourseForStudentView
+    class HomeLecturerView
+    class HomeStudentView
+    class LoginLecturerView
+    class RegisterStudentView
+}
+
+package "שירותים (Services)" {
+    class AdminService
+    class CoreService
+    class HomeLecturerService
+    class HomeStudentService
+    class LecturerService
+    class MongoService
+    class UserService
+    class WeatherService
+}
+
+' --- הזרקת שירותים ---
+AppLayoutStudent --> WeatherService
+
+ChooseCourseForStudentView --> MongoService
+ChooseCourseForStudentView --> UserService
+
+HomeLecturerView --> HomeLecturerService
+HomeLecturerView --> CoreService
+
+HomeStudentView --> HomeStudentService
+HomeStudentView --> CoreService
+
+LoginLecturerView --> LecturerService
+LoginLecturerView --> AdminService
+
+RegisterStudentView --> UserService
+@enduml
