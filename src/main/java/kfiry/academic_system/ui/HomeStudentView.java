@@ -76,7 +76,7 @@ public class HomeStudentView extends HorizontalLayout implements BeforeEnterObse
         calendar.setWidthFull();
         calendar.addClassNames(LumoUtility.Margin.Top.MEDIUM);
 
-        Button runAlgButton = new Button("runAlgoritemButton");
+        Button runAlgButton = new Button("הצג מערכת שעות");
 
         runAlgButton.setWidthFull();
         runAlgButton.addClickListener(clickEvent -> privateSchedule());
@@ -317,11 +317,6 @@ public class HomeStudentView extends HorizontalLayout implements BeforeEnterObse
         }
 
         Map<String, String> globalAssignments = globalSchedule.getCourseToSlot();
-
-        // ניקוי הגריד לפני שמציירים מחדש (אופציונלי, מומלץ כדי למנוע כפילויות בלחיצות
-        // חוזרות)
-        // הערה: תצטרך לנקות רק את כרטיסיות הקורסים ולא את שורות הרקע/שעות,
-        // או לבנות את גריד השעות מחדש אם אתה מנקה את הכל.
 
         // 2. עוברים על הקורסים של הסטודנט ומציירים אותם על הלוח לפי השעות הכלליות
         for (Course course : studentCourses) {

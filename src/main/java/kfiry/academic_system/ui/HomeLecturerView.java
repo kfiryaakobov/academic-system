@@ -174,7 +174,7 @@ public class HomeLecturerView extends VerticalLayout implements BeforeEnterObser
         return layout;
     }
 
-    private Div createEventCard(String title, String time, String room, String color, int col, int startRow,
+    private Div createEventCard(String title, String time, String color, int col, int startRow,
             int rowSpan) {
         Div card = new Div();
         card.addClassNames(LumoUtility.Padding.SMALL, LumoUtility.BorderRadius.MEDIUM);
@@ -245,8 +245,15 @@ public class HomeLecturerView extends VerticalLayout implements BeforeEnterObser
         H3 summaryTitle = new H3("סיכום שעות הוראה");
         summaryTitle.addClassName(LumoUtility.FontSize.MEDIUM);
 
-        int courseCount = (lecturerCourses != null) ? lecturerCourses.size() : 0;
-        int totalDuration = (lecturerCourses != null) ? homeServiceLecturer.calcDuration(lecturerCourses) : 0;
+        int courseCount = 0;
+        if (lecturerCourses != null) {
+            courseCount = lecturerCourses.size();
+        }
+
+        int totalDuration = 0;
+        if(lecturerCourses != null){
+            homeServiceLecturer.calcDuration(lecturerCourses);
+        }
 
         HorizontalLayout statsContainer = new HorizontalLayout();
         statsContainer.setWidthFull();
@@ -339,7 +346,6 @@ public class HomeLecturerView extends VerticalLayout implements BeforeEnterObser
                             createEventCard(
                                     course.getName(),
                                     timeString.split(" ")[1],
-                                    "חדר הרצאות",
                                     generateLightColor(),
                                     column,
                                     startRow,

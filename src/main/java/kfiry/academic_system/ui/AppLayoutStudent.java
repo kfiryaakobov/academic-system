@@ -16,7 +16,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.server.VaadinSession;
 
 import kfiry.academic_system.datamodels.User;
-import kfiry.academic_system.services.WeatherService; // ייבוא של הסרוויס שלך
+import kfiry.academic_system.services.WeatherService; // ייבוא של הסרוויס 
 
 public class AppLayoutStudent extends AppLayout {
 
