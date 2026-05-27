@@ -26,19 +26,19 @@ package "שירותים (Services)" {
 }
 
 ' --- הזרקת שירותים ---
-AppLayoutStudent --> WeatherService
+AppLayoutStudent *-- WeatherService
 
-ChooseCourseForStudentView --> MongoService
-ChooseCourseForStudentView --> UserService
+ChooseCourseForStudentView *-- MongoService
+ChooseCourseForStudentView *-- UserService
 
-HomeLecturerView --> HomeLecturerService
-HomeLecturerView --> CoreService
+HomeLecturerView *-- HomeLecturerService
+HomeLecturerView *-- CoreService
 
-HomeStudentView --> HomeStudentService
-HomeStudentView --> CoreService
+HomeStudentView *-- HomeStudentService
+HomeStudentView *-- CoreService
 
-LoginLecturerView --> LecturerService
-LoginLecturerView --> AdminService
+LoginLecturerView *-- LecturerService
+LoginLecturerView *-- AdminService
 
-RegisterStudentView --> UserService
+RegisterStudentView *-- UserService
 @enduml

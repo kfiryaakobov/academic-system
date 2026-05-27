@@ -24,25 +24,25 @@ package "שירותים (Services)" {
 }
 
 ' --- הזרקת שירותים ---
-AdminAddDataView --> UserService
-AdminAddDataView --> CourseService
-AdminAddDataView --> LecturerService
-AdminAddDataView --> AdminService
+AdminAddDataView *-- UserService
+AdminAddDataView *-- CourseService
+AdminAddDataView *-- LecturerService
+AdminAddDataView *-- AdminService
 
-AdminDataView --> UserService
-AdminDataView --> CourseService
-AdminDataView --> LecturerService
-AdminDataView --> AdminService
-AdminDataView --> ScheduleService
+AdminDataView *-- UserService
+AdminDataView *-- CourseService
+AdminDataView *-- LecturerService
+AdminDataView *-- AdminService
+AdminDataView *-- ScheduleService
 
-HomeAdminView --> CoreService
-HomeAdminView --> HomeAdminService
-HomeAdminView --> ScheduleService
+HomeAdminView *-- CoreService
+HomeAdminView *-- HomeAdminService
+HomeAdminView *-- ScheduleService
 
-LoginView --> UserService
+LoginView *-- UserService
 
-MongoView --> UserService
-MongoView --> CoreService
-MongoView --> CourseService
-MongoView --> LecturerService
+MongoView *-- UserService
+MongoView *-- CoreService
+MongoView *-- CourseService
+MongoView *-- LecturerService
 @enduml
