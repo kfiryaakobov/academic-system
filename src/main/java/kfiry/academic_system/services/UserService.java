@@ -7,15 +7,19 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
+//import com.vaadin.flow.server.VaadinSession;
+
 import kfiry.academic_system.datamodels.Course;
 import kfiry.academic_system.datamodels.User;
 import kfiry.academic_system.repositories.CourseRepository;
 import kfiry.academic_system.repositories.UserRepository;
+import kfiry.academic_system.utilities.PasswordHelper;
 
 @Service
 public class UserService {
     private UserRepository userRepo;
     private CourseRepository courseRepo;
+    //private int count = 0;
 
     /**
      * 
@@ -38,6 +42,10 @@ public class UserService {
     public ArrayList<User> getAllUsers() {
         return (ArrayList<User>) userRepo.findAll();
     }
+
+    // public ArrayList<User> getAllUsersByOrder() {
+    //     return (ArrayList<User>) userRepo.findAllByOrderByUsernameAsc();
+    // }
 
     public List<Course> getStudentCourses(User user) {
         return courseRepo.findAllById(user.getCourseIds());
@@ -73,9 +81,19 @@ public class UserService {
     public User authenticate(String email, String password) throws Exception {
         // שימוש ב-findById כי האימייל הוא ה- (Id)
         Optional<User> userOpt = userRepo.findById(email);
-        if (userOpt.isEmpty() || !userOpt.get().getPassword().equals(password)) {
-            throw new Exception("אימייל או סיסמה שגויים");
+        if (userOpt.isEmpty()) {
+                throw new Exception("אימייל או סיסמה שגויים");
         }
+
+        if(!PasswordHelper.match(password, userOpt.get().getPassword())){
+            throw new Exception("הסיסמא שכתבת אינה תקינה");
+        }
+
+        //count++;
+        //String number = count + " ";
+        //VaadinSession.getCurrent().setAttribute("counter", number);
+        //System.out.println("count" + count);
+
         return userOpt.get();
     }
 

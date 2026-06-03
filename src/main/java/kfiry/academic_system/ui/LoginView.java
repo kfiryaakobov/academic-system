@@ -22,6 +22,7 @@ public class LoginView extends HorizontalLayout {
     private TextField email;
     private PasswordField password;
     private UserService userService;
+    //private int counter = 0;
 
     public LoginView(UserService userService) {
 
@@ -162,6 +163,9 @@ public class LoginView extends HorizontalLayout {
             // שמירת האימייל בסשן
             VaadinSession.getCurrent().setAttribute("email", user.getEmail());
             VaadinSession.getCurrent().setAttribute("user", user);
+            //VaadinSession.getCurrent().setAttribute("counter",counter++);
+           
+            // System.out.println("counter" + counter);
             UI.getCurrent().navigate("/home");
         } catch (Exception exp) {
             Notification.show(exp.getMessage(), 5000, Position.MIDDLE);

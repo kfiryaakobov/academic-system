@@ -83,6 +83,13 @@ public class AppLayoutAdmin extends AppLayout {
             UI.getCurrent().navigate(AdminDataView.class);
         });
 
+        // Button viewTask2 = new Button("משימה 2");
+        // viewTask2.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        // viewTask2.getStyle().set("font-size", "var(--lumo-font-size-m)");
+        // viewTask2.addClickListener(e -> {
+        //     UI.getCurrent().navigate(Task2View.class);
+        // });
+
         menu.add(logoutButton, homeButton, addDataButton, viewDataButton);
 
         // 3. שמאל: פרטי מנהל ואוואטר

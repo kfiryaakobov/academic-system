@@ -7,6 +7,7 @@ import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+//import com.vaadin.flow.server.VaadinSession;
 
 @Route(value = "", layout = AppLayoutWelcome.class)
 public class WelcomeView extends VerticalLayout {
@@ -92,6 +93,11 @@ public class WelcomeView extends VerticalLayout {
         footer.getStyle().set("color", "#8d6e63");
         footer.getStyle().set("font-size", "0.9rem");
         footer.getStyle().set("margin-top", "40px");
+
+        // String countOnlines = (String) VaadinSession.getCurrent().getAttribute("counter");
+        // Paragraph onlineViews = new Paragraph("Online Viewrs " + countOnlines);
+        // onlineViews.getStyle().set("color", "#111010");
+        // onlineViews.getStyle().set("font-size", "2rem");
 
         card.add(heroImage, title, description, footer);
         content.add(card);

@@ -76,6 +76,15 @@ public class AppLayoutStudent extends AppLayout {
         logoutButton.getStyle().set("font-size", "var(--lumo-font-size-m)");
 
         logoutButton.addClickListener(e -> {
+
+            // String countOnlines = (String) VaadinSession.getCurrent().getAttribute("counter");
+            // int number = Integer.parseInt(countOnlines);
+            // System.out.println("num" + number);
+            // number--;
+            // String num = number + " ";
+            // System.out.println("newCount" + num);
+            // VaadinSession.getCurrent().getSession().setAttribute("counter",num);
+
             VaadinSession.getCurrent().getSession().invalidate();
             VaadinSession.getCurrent().close();
             UI.getCurrent().navigate(LoginView.class);

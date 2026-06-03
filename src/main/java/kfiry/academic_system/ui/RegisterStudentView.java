@@ -20,6 +20,7 @@ import com.vaadin.flow.server.VaadinSession;
 
 import kfiry.academic_system.datamodels.User;
 import kfiry.academic_system.services.UserService;
+import kfiry.academic_system.utilities.PasswordHelper;
 
 @Route("/register")
 public class RegisterStudentView extends VerticalLayout {
@@ -221,7 +222,7 @@ public class RegisterStudentView extends VerticalLayout {
             // הכל תקין - אפשר לעבור מסך
             User user = new User();
             user.setUsername(username.getValue());
-            user.setPassword(password.getValue());
+            user.setPassword(PasswordHelper.encode(password.getValue()));//PasswordHelper.encode(password.getValue())
             user.setEmail(email.getValue());
             user.setPhone(phone.getValue());
             user.setAge(age.getValue());

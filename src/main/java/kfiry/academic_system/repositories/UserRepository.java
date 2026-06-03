@@ -11,5 +11,7 @@ import kfiry.academic_system.datamodels.User;
 public interface UserRepository extends MongoRepository<User, String> {
     User findByUsername(String username);
 
+    //ArrayList<User> findAllByOrderByUsernameAsc();
+
     Optional<User> findByEmail(String mail);
 }
